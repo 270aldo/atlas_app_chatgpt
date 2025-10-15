@@ -1,0 +1,23 @@
+{
+  "name": "@atlas/mcp-node",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "eslint src --ext ts --report-unused-disable-directives --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "test": "echo 'No tests yet' && exit 0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.16",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3"
+  }
+}
