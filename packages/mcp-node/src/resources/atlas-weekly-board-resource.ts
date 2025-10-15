@@ -1,3 +1,5 @@
+import { WIDGET_BASE_URL as BASE_URL } from '../config.js';
+
 export const atlasWeeklyBoardResource = {
   definition: {
     uri: 'atlas://weekly-board/widget',
@@ -6,7 +8,7 @@ export const atlasWeeklyBoardResource = {
     mimeType: 'text/html+skybridge',
   },
   handler: async () => {
-    const widgetUrl = 'http://localhost:4444/src/entrypoints/atlas-weekly-board.tsx';
+    const widgetUrl = `${BASE_URL}/src/entrypoints/atlas-weekly-board.tsx`;
 
     const htmlContent = `
 <!DOCTYPE html>
