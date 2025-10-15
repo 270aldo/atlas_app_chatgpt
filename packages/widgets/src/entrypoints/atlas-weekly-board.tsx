@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import '../styles/globals.css';
 import { WeeklyBoard, DaySession } from '../components/WeeklyBoard';
+import { useWidgetProps } from '../utils/useWidgetProps';
 
 const samplePlan: DaySession[] = [
   {
@@ -45,8 +46,13 @@ const samplePlan: DaySession[] = [
   { day: 'Domingo', sessions: [{ title: 'Descanso', type: 'Descanso' }] },
 ];
 
+const App = () => {
+  const props = useWidgetProps<{ weekNumber: number; plan: DaySession[] }>({ weekNumber: 4, plan: samplePlan });
+  return <WeeklyBoard weekNumber={props.weekNumber} plan={props.plan} />;
+};
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <WeeklyBoard weekNumber={4} plan={samplePlan} />
+    <App />
   </React.StrictMode>
 );

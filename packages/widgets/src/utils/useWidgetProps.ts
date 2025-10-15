@@ -9,17 +9,16 @@ declare global {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useWidgetProps<T extends Record<string, any>>(defaults: T): T {
+export function useWidgetProps<T extends AnyObj>(defaults: T): T {
   const [props, setProps] = useState<T>(defaults);
 
   useEffect(() => {
     try {
       const fromHost = (window.oai?.widget?.getProps?.() || window.openai?.widget?.getProps?.()) as
-        | Partial<T>
+        | AnyObj
         | undefined;
       if (fromHost && Object.keys(fromHost).length > 0) {
-        setProps({ ...defaults, ...fromHost } as T);
+        setProps({ ...(defaults as AnyObj), ...fromHost } as T);
       }
     } catch (_e) {
       // ignore – fallback to defaults
