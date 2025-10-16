@@ -17,23 +17,107 @@ export function generateAdaptivePlan(
 ): PlanItem[] {
   // Base templates per risk
   const low: PlanItem[] = [
-    { day: 'Lunes', title: 'Fuerza tren inferior', intensity: 'moderada', focus: ['fuerza'], details: 'Sentadillas asistidas, elevación de talones, 2–3 series.' },
-    { day: 'Martes', title: 'Movilidad + Respiración', intensity: 'baja', focus: ['movilidad'], details: 'Cadera, hombros, respiración 10–12 min.' },
-    { day: 'Miércoles', title: 'Equilibrio básico', intensity: 'baja', focus: ['equilibrio'], details: 'Apoyo unipodal cerca de apoyo seguro.' },
-    { day: 'Jueves', title: 'Fuerza tren superior', intensity: 'moderada', focus: ['fuerza'], details: 'Empuje pared, remo banda, 2–3 series.' },
-    { day: 'Viernes', title: 'Caminata cómoda', intensity: 'baja', focus: ['resistencia'], details: '10–20 min a ritmo conversacional.' },
-    { day: 'Sábado', title: 'Movilidad suave', intensity: 'baja', focus: ['movilidad'], details: 'Columna, tobillos, cadera 10 min.' },
-    { day: 'Domingo', title: 'Descanso activo', intensity: 'baja', focus: ['recuperación'], details: 'Paseo breve o estiramientos ligeros.' },
+    {
+      day: 'Lunes',
+      title: 'Fuerza tren inferior',
+      intensity: 'moderada',
+      focus: ['fuerza'],
+      details: 'Sentadillas asistidas, elevación de talones, 2–3 series.',
+    },
+    {
+      day: 'Martes',
+      title: 'Movilidad + Respiración',
+      intensity: 'baja',
+      focus: ['movilidad'],
+      details: 'Cadera, hombros, respiración 10–12 min.',
+    },
+    {
+      day: 'Miércoles',
+      title: 'Equilibrio básico',
+      intensity: 'baja',
+      focus: ['equilibrio'],
+      details: 'Apoyo unipodal cerca de apoyo seguro.',
+    },
+    {
+      day: 'Jueves',
+      title: 'Fuerza tren superior',
+      intensity: 'moderada',
+      focus: ['fuerza'],
+      details: 'Empuje pared, remo banda, 2–3 series.',
+    },
+    {
+      day: 'Viernes',
+      title: 'Caminata cómoda',
+      intensity: 'baja',
+      focus: ['resistencia'],
+      details: '10–20 min a ritmo conversacional.',
+    },
+    {
+      day: 'Sábado',
+      title: 'Movilidad suave',
+      intensity: 'baja',
+      focus: ['movilidad'],
+      details: 'Columna, tobillos, cadera 10 min.',
+    },
+    {
+      day: 'Domingo',
+      title: 'Descanso activo',
+      intensity: 'baja',
+      focus: ['recuperación'],
+      details: 'Paseo breve o estiramientos ligeros.',
+    },
   ];
 
   const moderate: PlanItem[] = [
-    { day: 'Lunes', title: 'Movilidad + Técnica', intensity: 'baja', focus: ['movilidad'], details: 'Revisión técnica sin dolor (50–70%).' },
-    { day: 'Martes', title: 'Equilibrio guiado', intensity: 'baja', focus: ['equilibrio'], details: 'Unipodal con apoyo, 3×20–30s por lado.' },
-    { day: 'Miércoles', title: 'Caminata suave', intensity: 'baja', focus: ['resistencia'], details: '8–15 min cómodos.' },
-    { day: 'Jueves', title: 'Fuerza ligera', intensity: 'baja', focus: ['fuerza'], details: '1–2 series, RPE 4–6, sin dolor.' },
-    { day: 'Viernes', title: 'Movilidad', intensity: 'baja', focus: ['movilidad'], details: 'Cadera/columna 10 min.' },
-    { day: 'Sábado', title: 'Equilibrio + Core', intensity: 'baja', focus: ['equilibrio'], details: 'Base ancha, apoyo cercano.' },
-    { day: 'Domingo', title: 'Descanso', intensity: 'baja', focus: ['recuperación'], details: 'Hidratación, sueño.' },
+    {
+      day: 'Lunes',
+      title: 'Movilidad + Técnica',
+      intensity: 'baja',
+      focus: ['movilidad'],
+      details: 'Revisión técnica sin dolor (50–70%).',
+    },
+    {
+      day: 'Martes',
+      title: 'Equilibrio guiado',
+      intensity: 'baja',
+      focus: ['equilibrio'],
+      details: 'Unipodal con apoyo, 3×20–30s por lado.',
+    },
+    {
+      day: 'Miércoles',
+      title: 'Caminata suave',
+      intensity: 'baja',
+      focus: ['resistencia'],
+      details: '8–15 min cómodos.',
+    },
+    {
+      day: 'Jueves',
+      title: 'Fuerza ligera',
+      intensity: 'baja',
+      focus: ['fuerza'],
+      details: '1–2 series, RPE 4–6, sin dolor.',
+    },
+    {
+      day: 'Viernes',
+      title: 'Movilidad',
+      intensity: 'baja',
+      focus: ['movilidad'],
+      details: 'Cadera/columna 10 min.',
+    },
+    {
+      day: 'Sábado',
+      title: 'Equilibrio + Core',
+      intensity: 'baja',
+      focus: ['equilibrio'],
+      details: 'Base ancha, apoyo cercano.',
+    },
+    {
+      day: 'Domingo',
+      title: 'Descanso',
+      intensity: 'baja',
+      focus: ['recuperación'],
+      details: 'Hidratación, sueño.',
+    },
   ];
 
   const high: PlanItem[] = DAYS.map((d) => ({
@@ -50,13 +134,21 @@ export function generateAdaptivePlan(
   if (goal === 'equilibrio') {
     plan = plan.map((p, i) =>
       i % 2 === 1
-        ? { ...p, title: 'Equilibrio + apoyo', focus: Array.from(new Set([...p.focus, 'equilibrio'])) }
+        ? {
+            ...p,
+            title: 'Equilibrio + apoyo',
+            focus: Array.from(new Set([...p.focus, 'equilibrio'])),
+          }
         : p
     );
   } else if (goal === 'fuerza') {
     plan = plan.map((p, i) =>
       i % 2 === 0
-        ? { ...p, title: p.title.includes('Fuerza') ? p.title : 'Fuerza técnica', focus: Array.from(new Set([...p.focus, 'fuerza'])) }
+        ? {
+            ...p,
+            title: p.title.includes('Fuerza') ? p.title : 'Fuerza técnica',
+            focus: Array.from(new Set([...p.focus, 'fuerza'])),
+          }
         : p
     );
   } else if (goal === 'movilidad') {
@@ -68,11 +160,13 @@ export function generateAdaptivePlan(
     plan = plan.map((p) => ({ ...p, details: p.details + ' (evita dolor)' }));
   }
   if (checkin.energy <= 4) {
-    plan = plan.map((p) => ({ ...p, intensity: p.intensity === 'moderada' ? 'baja' : p.intensity }));
+    plan = plan.map((p) => ({
+      ...p,
+      intensity: p.intensity === 'moderada' ? 'baja' : p.intensity,
+    }));
   }
 
   // Keep ordering by DAYS
   const byDay = new Map(plan.map((p) => [p.day, p] as const));
   return DAYS.map((d) => byDay.get(d)!).filter(Boolean);
 }
-

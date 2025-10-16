@@ -18,13 +18,55 @@ interface WeeklyPlanProps {
 
 const defaults: WeeklyPlanProps = {
   plan: [
-    { day: 'Lunes', title: 'Movilidad', intensity: 'baja', focus: ['movilidad'], details: '5–10 min' },
-    { day: 'Martes', title: 'Equilibrio', intensity: 'baja', focus: ['equilibrio'], details: 'Apoyo seguro' },
-    { day: 'Miércoles', title: 'Fuerza técnica', intensity: 'baja', focus: ['fuerza'], details: '1–2 series' },
-    { day: 'Jueves', title: 'Movilidad', intensity: 'baja', focus: ['movilidad'], details: 'Respiración + cadera' },
-    { day: 'Viernes', title: 'Caminata', intensity: 'baja', focus: ['resistencia'], details: 'Ritmo conversacional' },
-    { day: 'Sábado', title: 'Movilidad', intensity: 'baja', focus: ['movilidad'], details: 'Columna suave' },
-    { day: 'Domingo', title: 'Descanso', intensity: 'baja', focus: ['recuperación'], details: 'Sueño e hidratación' },
+    {
+      day: 'Lunes',
+      title: 'Movilidad',
+      intensity: 'baja',
+      focus: ['movilidad'],
+      details: '5–10 min',
+    },
+    {
+      day: 'Martes',
+      title: 'Equilibrio',
+      intensity: 'baja',
+      focus: ['equilibrio'],
+      details: 'Apoyo seguro',
+    },
+    {
+      day: 'Miércoles',
+      title: 'Fuerza técnica',
+      intensity: 'baja',
+      focus: ['fuerza'],
+      details: '1–2 series',
+    },
+    {
+      day: 'Jueves',
+      title: 'Movilidad',
+      intensity: 'baja',
+      focus: ['movilidad'],
+      details: 'Respiración + cadera',
+    },
+    {
+      day: 'Viernes',
+      title: 'Caminata',
+      intensity: 'baja',
+      focus: ['resistencia'],
+      details: 'Ritmo conversacional',
+    },
+    {
+      day: 'Sábado',
+      title: 'Movilidad',
+      intensity: 'baja',
+      focus: ['movilidad'],
+      details: 'Columna suave',
+    },
+    {
+      day: 'Domingo',
+      title: 'Descanso',
+      intensity: 'baja',
+      focus: ['recuperación'],
+      details: 'Sueño e hidratación',
+    },
   ],
 };
 
@@ -75,4 +117,3 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = (props) => {
     </div>
   );
 };
-

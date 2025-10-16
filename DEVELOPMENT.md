@@ -69,6 +69,7 @@ pnpm --filter @atlas/widgets dev
 ```
 
 **Salida esperada:**
+
 ```
 VITE v5.1.0  ready in XXX ms
 
@@ -89,6 +90,7 @@ ngrok http 4444
 ```
 
 **Salida esperada:**
+
 ```
 Session Status                online
 Account                       tu@email.com
@@ -111,6 +113,7 @@ WIDGET_BASE_URL=https://abc123.ngrok.app pnpm --filter @atlas/mcp-node dev
 ```
 
 **Salida esperada:**
+
 ```
 ATLAS MCP Server running on stdio
 ```
@@ -130,6 +133,7 @@ ATLAS MCP Server running on stdio
 ### Método 2: Como MCP Server Local (Recomendado)
 
 1. Compila el proyecto:
+
    ```bash
    pnpm build
    ```
@@ -173,6 +177,7 @@ Hacer check-in: dolor 9, energía 2, RPE 9, notas: "dolor de pecho"
 ```
 
 **Esperado:**
+
 - Widget rojo con STOP
 - Bloqueo de tools no esenciales
 - Recomendación de consulta médica
@@ -193,6 +198,7 @@ Dame un plan semanal de equilibrio
 ```
 
 **Esperado:**
+
 - Si NO hay check-in previo: Solicita check-in primero
 - Si HAY check-in: Genera plan ajustado al riesgo actual
 
@@ -255,6 +261,7 @@ ATLAS ahora incluye un sistema robusto de seguridad clínica. Ver **[FEATURES.md
 **Causa**: ChatGPT no puede alcanzar tu servidor.
 
 **Solución**:
+
 1. Verifica que ngrok esté corriendo (Terminal 2)
 2. Verifica que WIDGET_BASE_URL esté configurado correctamente
 3. Prueba abrir `https://TU_URL.ngrok.app/src/entrypoints/atlas-dashboard.tsx` en un navegador
@@ -265,6 +272,7 @@ ATLAS ahora incluye un sistema robusto de seguridad clínica. Ver **[FEATURES.md
 **Causa**: URLs incorrectas o WIDGET_BASE_URL no configurado.
 
 **Solución**:
+
 ```bash
 # Verifica que la variable esté configurada
 echo $WIDGET_BASE_URL
@@ -278,6 +286,7 @@ WIDGET_BASE_URL=https://TU_URL_CORRECTA.ngrok.app pnpm --filter @atlas/mcp-node 
 **Causa**: El plan gratuito de ngrok genera URLs aleatorias.
 
 **Soluciones**:
+
 - **Opción 1 (gratis)**: Actualiza WIDGET_BASE_URL cada vez que cambies la URL
 - **Opción 2 (pagado $8/mes)**: Upgrade a ngrok Pro para URLs fijas
 
@@ -286,9 +295,10 @@ WIDGET_BASE_URL=https://TU_URL_CORRECTA.ngrok.app pnpm --filter @atlas/mcp-node 
 **Causa**: `structuredContent` no se está pasando correctamente.
 
 **Solución**:
+
 1. Verifica en Chrome DevTools (en ChatGPT):
    ```javascript
-   window.openai
+   window.openai;
    // Debe tener: { toolOutput: { weekData: {...} } }
    ```
 2. Si es `undefined`, verifica que el tool esté retornando `structuredContent`
@@ -296,6 +306,7 @@ WIDGET_BASE_URL=https://TU_URL_CORRECTA.ngrok.app pnpm --filter @atlas/mcp-node 
 ### Tests fallan
 
 **Solución**:
+
 ```bash
 # Reinstalar dependencias
 pnpm install

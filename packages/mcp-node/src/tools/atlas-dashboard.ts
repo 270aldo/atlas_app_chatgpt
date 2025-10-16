@@ -36,7 +36,12 @@ export const atlasDashboardTool = {
     const week = parsed.weekNumber || 4;
     const safety =
       parsed.pain != null && parsed.energy != null && parsed.rpe != null
-        ? triageCheckin({ pain: parsed.pain, energy: parsed.energy, rpe: parsed.rpe, notes: parsed.notes })
+        ? triageCheckin({
+            pain: parsed.pain,
+            energy: parsed.energy,
+            rpe: parsed.rpe,
+            notes: parsed.notes,
+          })
         : undefined;
 
     // TODO: Obtener datos reales desde tu base de datos

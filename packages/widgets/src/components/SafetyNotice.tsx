@@ -18,8 +18,8 @@ export const SafetyNotice: React.FC<SafetyNoticeProps> = ({
     risk === 'high'
       ? 'border-red-700 bg-red-900/30 text-red-200'
       : risk === 'moderate'
-      ? 'border-yellow-700 bg-yellow-900/30 text-yellow-200'
-      : 'border-gray-700 bg-gray-900 text-gray-200';
+        ? 'border-yellow-700 bg-yellow-900/30 text-yellow-200'
+        : 'border-gray-700 bg-gray-900 text-gray-200';
 
   const title = risk === 'high' ? 'Atención' : risk === 'moderate' ? 'Precaución' : 'Información';
 

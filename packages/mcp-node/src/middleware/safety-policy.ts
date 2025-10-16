@@ -3,7 +3,12 @@ import { triageCheckin, CheckinPayload, TriageResult } from '../utils/clinical-g
 type ProceedResult = { content: unknown; structuredContent?: Record<string, unknown> };
 
 const ALWAYS_ALLOW = new Set(['atlas_session_checkin', 'atlas_safety_review']);
-const CORE_SAFE = new Set(['atlas_session_checkin', 'atlas_dashboard', 'atlas_adaptive_plan', 'atlas_safety_review']);
+const CORE_SAFE = new Set([
+  'atlas_session_checkin',
+  'atlas_dashboard',
+  'atlas_adaptive_plan',
+  'atlas_safety_review',
+]);
 
 function requiresCheckin(name: string) {
   return !ALWAYS_ALLOW.has(name) && name !== 'atlas_dashboard';

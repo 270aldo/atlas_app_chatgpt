@@ -40,8 +40,8 @@ export const atlasSafetyReviewTool = {
       gate === 'block'
         ? 'Se recomienda bloquear herramientas intensas y priorizar descanso/movilidad. Usa el check‑in o plan adaptativo.'
         : gate === 'defer'
-        ? 'Se recomienda posponer acciones intensas y reducir volumen (50–70%).'
-        : 'Puedes continuar con precaución y técnica segura.',
+          ? 'Se recomienda posponer acciones intensas y reducir volumen (50–70%).'
+          : 'Puedes continuar con precaución y técnica segura.',
       ...safety.recommendations,
       safety.disclaimer,
     ]
@@ -54,4 +54,3 @@ export const atlasSafetyReviewTool = {
     };
   },
 };
-

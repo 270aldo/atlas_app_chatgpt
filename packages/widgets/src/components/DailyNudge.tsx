@@ -31,9 +31,14 @@ export const DailyNudge: React.FC = () => {
   };
 
   return (
-    <div className="border border-yellow-700 bg-yellow-900/30 text-yellow-200 rounded-lg p-4 mb-4" role="note">
+    <div
+      className="border border-yellow-700 bg-yellow-900/30 text-yellow-200 rounded-lg p-4 mb-4"
+      role="note"
+    >
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-        <p className="text-sm">Hace más de un día que no registras tu estado. ¿Hacemos un check‑in rápido?</p>
+        <p className="text-sm">
+          Hace más de un día que no registras tu estado. ¿Hacemos un check‑in rápido?
+        </p>
         <div className="flex gap-2">
           <button onClick={copyPrompt} className="btn-primary" aria-label="Abrir check-in">
             Hacer check‑in
@@ -51,4 +56,3 @@ export function markCheckinNow() {
     // ignore
   }
 }
-

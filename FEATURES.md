@@ -17,6 +17,7 @@ ATLAS ahora incluye un sistema robusto de guardarraíles clínicos (clinical gua
 Función principal: `triageCheckin(input: CheckinData)`
 
 **Entrada:**
+
 ```typescript
 {
   pain: number;      // 0-10
@@ -27,6 +28,7 @@ Función principal: `triageCheckin(input: CheckinData)`
 ```
 
 **Salida:**
+
 ```typescript
 {
   risk: 'low' | 'moderate' | 'high';
@@ -55,6 +57,7 @@ Función principal: `triageCheckin(input: CheckinData)`
   - RPE ≤ 7
 
 **Red Flags (Palabras Clave):**
+
 - Dolor de pecho
 - Mareo/mareos
 - Dificultad para respirar/disnea
@@ -82,6 +85,7 @@ Función: `applySafetyPolicy(toolName, args, handler)`
    - Todos los responses incluyen `structuredContent.safety` para que widgets muestren avisos
 
 **Flujo:**
+
 ```
 Usuario invoca tool
     ↓
@@ -103,6 +107,7 @@ Tool MCP: `atlas_safety_review`
 **Propósito:** Revisión manual de seguridad cuando el asistente tiene dudas.
 
 **Input:**
+
 ```typescript
 {
   pain: number;
@@ -114,6 +119,7 @@ Tool MCP: `atlas_safety_review`
 ```
 
 **Output:**
+
 ```typescript
 {
   gate: 'allow' | 'defer' | 'block';
@@ -142,11 +148,11 @@ Función: `generateAdaptivePlan(input)`
 
 **Ajustes por Riesgo:**
 
-| Riesgo | Sesiones/semana | Duración | Intensidad |
-|--------|----------------|----------|------------|
-| **Bajo** | 3 | 30 min | Moderada |
-| **Moderado** | 2 | 20 min | Baja |
-| **Alto** | 1 | 15 min | Muy baja (movilidad) |
+| Riesgo       | Sesiones/semana | Duración | Intensidad           |
+| ------------ | --------------- | -------- | -------------------- |
+| **Bajo**     | 3               | 30 min   | Moderada             |
+| **Moderado** | 2               | 20 min   | Baja                 |
+| **Alto**     | 1               | 15 min   | Muy baja (movilidad) |
 
 ---
 
@@ -161,6 +167,7 @@ Widget que muestra avisos de seguridad con códigos de color:
 - **Rojo:** Riesgo alto - STOP + instrucciones de descanso
 
 **Props:**
+
 ```typescript
 {
   risk?: 'low' | 'moderate' | 'high';
@@ -170,6 +177,7 @@ Widget que muestra avisos de seguridad con códigos de color:
 ```
 
 **Características:**
+
 - Botón "Leer en voz" para accesibilidad
 - Animaciones suaves
 - Iconos claros (✅ ⚠️ 🛑)
@@ -197,8 +205,7 @@ Recordatorio de check-in diario:
 **Archivo:** `packages/mcp-node/src/config.ts`
 
 ```typescript
-export const WIDGET_BASE_URL =
-  process.env.WIDGET_BASE_URL?.trim() || 'http://localhost:4444';
+export const WIDGET_BASE_URL = process.env.WIDGET_BASE_URL?.trim() || 'http://localhost:4444';
 ```
 
 **Uso:**
@@ -280,25 +287,30 @@ Response:
 ### Tests Implementados
 
 #### Clinical Guardrails (`clinical-guardrails.test.ts`)
+
 - ✅ Clasifica riesgo bajo correctamente
 - ✅ Clasifica riesgo moderado correctamente
 - ✅ Clasifica riesgo alto correctamente
 - ✅ Detecta red flags en notas
 
 #### Safety Policy (`safety-policy.test.ts`)
+
 - ✅ Bloquea tools en riesgo alto con triggers
 - ✅ Requiere check-in para tools específicos
 
 #### Adaptive Plan (`adaptive-plan.test.ts`)
+
 - ✅ Genera planes apropiados por riesgo
 - ✅ Reduce volumen en riesgo moderado
 - ✅ Limita a movilidad en riesgo alto
 
 #### Widget Props (`useWidgetProps.test.tsx`)
+
 - ✅ Retorna defaults cuando no hay props del host
 - ✅ Merge props del host correctamente
 
 **Ejecutar tests:**
+
 ```bash
 pnpm test              # Todos los tests
 pnpm -w test          # Desde raíz
@@ -313,22 +325,26 @@ pnpm lint             # Verificar estilo
 ### Prompts de Ejemplo
 
 **Check-in normal:**
+
 ```
 Hacer check-in: dolor 4, energía 7, RPE 6
 ```
 
 **Safety review antes de actividad:**
+
 ```
 Revisar seguridad: dolor 6, energía 5, RPE 7,
 actividad propuesta "Sesión de sentadillas con peso"
 ```
 
 **Solicitar plan adaptativo:**
+
 ```
 Dame un plan semanal de equilibrio
 ```
 
 **Ver dashboard:**
+
 ```
 Muestra mi progreso semanal
 ```
@@ -359,6 +375,7 @@ Muestra mi progreso semanal
 ## 📞 Soporte
 
 Para preguntas o problemas:
+
 - Revisa `DEVELOPMENT.md` para setup local
 - Revisa tests para ejemplos de uso
 - Consulta `CLAUDE.md` para arquitectura general

@@ -25,11 +25,12 @@ describe('useWidgetProps', () => {
   });
 
   it('merges host props when available', async () => {
-    window.openai = { widget: { getProps: () => ({ foo: 9, bar: 'ok' } as Record<string, unknown>) } };
+    window.openai = {
+      widget: { getProps: () => ({ foo: 9, bar: 'ok' }) as Record<string, unknown> },
+    };
     render(<Probe defaults={{ foo: 1 }} />);
     const el = await screen.findByTestId('value');
     expect(el.textContent).toContain('"foo":9');
     expect(el.textContent).toContain('"bar":"ok"');
   });
 });
-

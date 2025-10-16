@@ -32,4 +32,3 @@ export const ConsentBanner: React.FC = () => {
     </div>
   );
 };
-

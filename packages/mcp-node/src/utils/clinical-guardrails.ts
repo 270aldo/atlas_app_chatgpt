@@ -86,4 +86,3 @@ export function triageCheckin(input: CheckinPayload): TriageResult {
     triggers,
   };
 }
-

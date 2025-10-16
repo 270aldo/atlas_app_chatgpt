@@ -9,6 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **ATLAS** is a fitness application for older adults that lives inside ChatGPT, built using the OpenAI Apps SDK and Model Context Protocol (MCP). It provides adaptive strength/balance programming, risk screening, interactive dashboards, and health check-ins.
 
 **Tech Stack:**
+
 - Frontend: React + TypeScript + Tailwind CSS + Vite
 - Backend: Node.js MCP server using @modelcontextprotocol/sdk
 - Architecture: pnpm monorepo with two packages (widgets + mcp-node)
@@ -90,6 +91,7 @@ packages/
 **File:** `packages/mcp-node/src/index.ts`
 
 The MCP server follows this pattern:
+
 1. **Tools** are defined in `tools/` (e.g., `atlas-dashboard.ts`)
    - Each exports `{ definition, handler }`
    - Handlers return text/plain responses or references to resources
@@ -99,6 +101,7 @@ The MCP server follows this pattern:
 3. **Main server** (`index.ts`) registers all tools/resources with handlers
 
 When adding new features:
+
 - Create tool in `tools/` and resource in `resources/`
 - Import and register both in `index.ts`
 - Create corresponding widget entrypoint in `packages/widgets/src/entrypoints/`
@@ -109,12 +112,14 @@ When adding new features:
 **Directory:** `packages/widgets/src/`
 
 Widgets use **multi-entry Vite builds**:
+
 - Each entrypoint file (e.g., `atlas-dashboard.tsx`) is a standalone bundle
 - Build outputs to `dist/assets/[name].[hash].js`
 - MCP resources return Skybridge URIs pointing to these bundles
 - ChatGPT fetches and renders the widget in iframe
 
 **Widget props pattern:**
+
 ```tsx
 import { useWidgetProps } from '../utils/useWidgetProps';
 
@@ -127,11 +132,13 @@ const props = useWidgetProps<{ userId: string; weekNumber: number }>();
 ## Git Workflow
 
 **Branching strategy:**
+
 - `main` – production (protected)
 - `feature/*` – new features (branch from main)
 - `hotfix/*` – urgent fixes
 
 **Commit conventions (Conventional Commits):**
+
 ```
 feat(scope): description
 fix(scope): description
@@ -140,11 +147,13 @@ chore(scope): description
 ```
 
 Examples:
+
 - `feat(dashboard): add weekly adherence metric widget`
 - `fix(mcp): correct CORS headers for widget assets`
 - `docs(readme): update setup instructions`
 
 **PR requirements:**
+
 - Code compiles without errors
 - All tests pass (`pnpm test`)
 - Formatted (`pnpm format`)
@@ -161,6 +170,7 @@ Examples:
 **Components:** shadcn/ui + custom components for older adults
 
 **Accessibility requirements:**
+
 - Font sizes ≥ 16px (ideal 18-20px for older adults)
 - Touch targets ≥ 44x44px
 - Contrast ratio ≥ 4.5:1
@@ -172,6 +182,7 @@ Examples:
 ## Key Metrics & Domain
 
 ATLAS tracks:
+
 - **Adherence:** % sessions completed vs planned
 - **Progression:** % increase in load, reps, time without pain
 - **Balance:** Time Up & Go, One Leg Stand
@@ -179,6 +190,7 @@ ATLAS tracks:
 - **Alerts:** Falls, acute pain, missed sessions
 
 **Compliance:**
+
 - No medical diagnosis (educational only)
 - PHI must be encrypted
 - Auto-referral triggers for medical consultation

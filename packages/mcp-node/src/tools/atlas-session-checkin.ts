@@ -11,7 +11,8 @@ const SessionCheckinArgs = z.object({
 export const atlasSessionCheckinTool = {
   definition: {
     name: 'atlas_session_checkin',
-    description: 'Formulario de check-in de sesión (dolor, energía, RPE, notas) para ajustar el plan',
+    description:
+      'Formulario de check-in de sesión (dolor, energía, RPE, notas) para ajustar el plan',
     inputSchema: {
       type: 'object',
       properties: {

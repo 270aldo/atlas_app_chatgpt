@@ -23,4 +23,3 @@ describe('clinical-guardrails triageCheckin', () => {
     expect(r.risk).toBe('low');
   });
 });
-

@@ -10,6 +10,7 @@
 ## 🎯 Misión
 
 ATLAS ayuda a adultos mayores a mantenerse activos, fuertes y seguros mediante:
+
 - 🏋️ **Programación adaptativa** de fuerza, balance y movilidad
 - 🔍 **Screening de riesgos** personalizados (caídas, prótesis, dolor crónico)
 - 📊 **Dashboards interactivos** con métricas de longevidad
@@ -132,6 +133,7 @@ Lee nuestra [guía de contribución](./CONTRIBUTING.md) para conocer el proceso 
 ## 🏥 Compliance y Seguridad
 
 ATLAS maneja información de salud y fitness con estándares elevados:
+
 - ⚠️ **No diagnóstico**: Información educativa, no reemplaza consulta médica
 - 🔒 **Cifrado**: PHI no se almacena sin cifrado apropiado
 - ✅ **Derivación médica**: Gatillos automáticos para consultar profesionales

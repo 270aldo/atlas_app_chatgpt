@@ -22,4 +22,3 @@ export const ReadAloudButton: React.FC<{ text: string; label?: string }> = ({ te
     </button>
   );
 };
-

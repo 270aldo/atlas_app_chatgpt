@@ -12,9 +12,9 @@ Este documento define el flujo de trabajo de ramas (GitFlow ligero) para ATLAS.
 
 ## Ramas de Trabajo
 
-- feature/*: Nuevas funcionalidades (desde develop)
-- hotfix/*: Fixes urgentes en producción (desde main)
-- release/*: Estabilización previa a release (desde develop)
+- feature/\*: Nuevas funcionalidades (desde develop)
+- hotfix/\*: Fixes urgentes en producción (desde main)
+- release/\*: Estabilización previa a release (desde develop)
 
 ---
 
@@ -28,18 +28,24 @@ Este documento define el flujo de trabajo de ramas (GitFlow ligero) para ATLAS.
 ## Flujo de Trabajo Diario
 
 1. Actualiza develop
+
 ```bash
 git checkout develop && git pull --ff-only
 ```
+
 2. Crea la rama de feature
+
 ```bash
 git checkout -b feature/nombre-descriptivo
 ```
+
 3. Commits con Conventional Commits
+
 ```text
 feat(session-checkin): add accessible sliders and safety notice
 fix(ci): use pnpm v10 and disable frozen lockfile
 ```
+
 4. Abre PR → base develop (auto-merge cuando CI pase)
 5. Al mergear, borra la rama remota
 
@@ -48,17 +54,21 @@ fix(ci): use pnpm v10 and disable frozen lockfile
 ## Releases
 
 1. Crea rama release desde develop
+
 ```bash
 git checkout develop && git pull --ff-only
 git checkout -b release/v0.2.0
 ```
+
 2. Actualiza version y CHANGELOG.md
 3. PR a staging → validar en QA
 4. PR a main → crear tag
+
 ```bash
 git tag -a v0.2.0 -m "v0.2.0"
 git push origin v0.2.0
 ```
+
 5. Haz merge back a develop (si difiere)
 
 ---
@@ -66,10 +76,12 @@ git push origin v0.2.0
 ## Hotfixes
 
 1. Rama desde main
+
 ```bash
 git checkout main && git pull --ff-only
 git checkout -b hotfix/critico-500
 ```
+
 2. PR a main (tag patch, p.ej. v0.2.1)
 3. Cherrypick o merge a develop/staging para mantener paridad
 

@@ -49,7 +49,9 @@ export const Dashboard: React.FC<DashboardProps> = (props) => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="card-premium">
-            <h2 className="text-sm uppercase tracking-wide text-gray-500 mb-2">Sesiones Completadas</h2>
+            <h2 className="text-sm uppercase tracking-wide text-gray-500 mb-2">
+              Sesiones Completadas
+            </h2>
             <p className="text-5xl font-bold text-electric-violet">
               {weekData.sessionsCompleted}
               <span className="text-2xl text-gray-500">/{weekData.totalSessions}</span>
@@ -80,7 +82,9 @@ export const Dashboard: React.FC<DashboardProps> = (props) => {
               aria-valuemax={100}
             />
           </div>
-          <p className="text-right text-gray-400 mt-2 text-lg">{progressPercent.toFixed(0)}% completado</p>
+          <p className="text-right text-gray-400 mt-2 text-lg">
+            {progressPercent.toFixed(0)}% completado
+          </p>
         </div>
 
         <div className="flex justify-center">
@@ -88,7 +92,9 @@ export const Dashboard: React.FC<DashboardProps> = (props) => {
             className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Ir a sesión de hoy"
             disabled={safety?.risk === 'high'}
-            title={safety?.risk === 'high' ? 'Descanso y movilidad suave recomendados hoy' : undefined}
+            title={
+              safety?.risk === 'high' ? 'Descanso y movilidad suave recomendados hoy' : undefined
+            }
           >
             {safety?.risk === 'high' ? 'Descansar / Movilidad Suave' : 'Continuar con mi sesión'}
           </button>
