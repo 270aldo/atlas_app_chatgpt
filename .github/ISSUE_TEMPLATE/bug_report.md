@@ -1,10 +1,9 @@
 ---
 name: Bug Report
 about: Reportar un problema para ayudarnos a mejorar
-title: "[BUG] "
+title: '[BUG] '
 labels: bug
 assignees: ''
-
 ---
 
 ## Descripción del Bug

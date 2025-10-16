@@ -23,7 +23,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ weekData }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="card-premium">
-            <h2 className="text-sm uppercase tracking-wide text-gray-500 mb-2">Sesiones Completadas</h2>
+            <h2 className="text-sm uppercase tracking-wide text-gray-500 mb-2">
+              Sesiones Completadas
+            </h2>
             <p className="text-5xl font-bold text-electric-violet">
               {weekData.sessionsCompleted}
               <span className="text-2xl text-gray-500">/{weekData.totalSessions}</span>
@@ -54,11 +56,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ weekData }) => {
               aria-valuemax={100}
             />
           </div>
-          <p className="text-right text-gray-400 mt-2 text-lg">{progressPercent.toFixed(0)}% completado</p>
+          <p className="text-right text-gray-400 mt-2 text-lg">
+            {progressPercent.toFixed(0)}% completado
+          </p>
         </div>
 
         <div className="flex justify-center">
-          <button className="btn-primary" aria-label="Ir a sesión de hoy">Continuar con mi sesión</button>
+          <button className="btn-primary" aria-label="Ir a sesión de hoy">
+            Continuar con mi sesión
+          </button>
         </div>
       </div>
     </div>

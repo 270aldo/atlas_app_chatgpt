@@ -1,10 +1,9 @@
 ---
 name: Feature Request
 about: Sugerir una idea para este proyecto
-title: "[FEATURE] "
+title: '[FEATURE] '
 labels: enhancement
 assignees: ''
-
 ---
 
 ## ¿Está tu feature request relacionada con un problema?

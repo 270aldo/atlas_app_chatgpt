@@ -57,6 +57,7 @@ Este documento explica, de forma práctica y paso a paso, cómo configurar un en
 - MCP_SDK_Guide.md (deep dive técnico de MCP)
 
 Al finalizar, tendrás:
+
 - Un servidor de assets para widgets (con Vite)
 - Uno o más servidores MCP (Node o Python)
 - Flujo de pruebas en ChatGPT Developer Mode
@@ -65,7 +66,7 @@ Al finalizar, tendrás:
 ## 2. Prerrequisitos
 
 - Node.js 18+ (recomendado 20+)
-  - Verifica: 
+  - Verifica:
     ```bash
     node --version
     ```
@@ -88,6 +89,7 @@ Al finalizar, tendrás:
   ```
 
 Sugerencias ATLAS (accesibilidad):
+
 - Usa tipografías grandes y alto contraste para widgets
 - Navegación por teclado y roles ARIA
 
@@ -165,8 +167,8 @@ Un ejemplo de Vite con múltiples entradas, útil para exponer varios widgets (d
 
 ```ts
 // vite.config.ts (ejemplo)
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
@@ -189,7 +191,7 @@ export default defineConfig({
     strictPort: true,
     cors: true,
   },
-})
+});
 ```
 
 - Entrypoints múltiples: permite un archivo HTML/JS por widget
@@ -216,7 +218,7 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};
 ```
 
 ## 6. Anatomía de un widget React (Apps SDK UI)
@@ -227,32 +229,36 @@ Los hooks varían según el kit de UI usado por los ejemplos. Un patrón común:
 
 ```tsx
 // Ejemplo de patrones de hooks
-import React from 'react'
+import React from 'react';
 
 function AtlasDashboardWidget(props: { data: any }) {
-  const [state, setState] = React.useState({ filter: 'week' })
+  const [state, setState] = React.useState({ filter: 'week' });
 
   // Evita guardar datos sensibles; el estado del widget es efímero
   const onFilterChange = (filter: 'week' | 'month') => {
-    setState({ filter })
+    setState({ filter });
     // Puede sincronizar con el host si se expone una API global
     // window.openai?.setWidgetState?.({ filter })
-  }
+  };
 
   return (
     <div className="p-4 text-base">
       <h2 className="text-xl font-bold mb-2">ATLAS — Dashboard</h2>
       <div className="flex gap-2 mb-4">
-        <button className="btn" onClick={() => onFilterChange('week')}>Semana</button>
-        <button className="btn" onClick={() => onFilterChange('month')}>Mes</button>
+        <button className="btn" onClick={() => onFilterChange('week')}>
+          Semana
+        </button>
+        <button className="btn" onClick={() => onFilterChange('month')}>
+          Mes
+        </button>
       </div>
       {/* Renderiza métricas desde props.data */}
       <pre className="text-xs bg-black/20 p-2 rounded">{JSON.stringify(props.data, null, 2)}</pre>
     </div>
-  )
+  );
 }
 
-export default AtlasDashboardWidget
+export default AtlasDashboardWidget;
 ```
 
 ### 6.2 Estilos y accesibilidad
@@ -278,13 +284,13 @@ export default AtlasDashboardWidget
 
 ```ts
 // mcp/node/src/server.ts (esquema simplificado)
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
-import { z } from 'zod'
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { z } from 'zod';
 
 const server = new McpServer({
   name: 'atlas-mcp-node',
   version: '0.1.0',
-})
+});
 
 server.tool(
   'atlas_dashboard',
@@ -300,7 +306,7 @@ server.tool(
       adherence: 0.86,
       strengthProgress: 0.12,
       balanceScore: 0.75,
-    }
+    };
 
     return {
       content: [
@@ -320,9 +326,9 @@ server.tool(
         'openai/toolInvocation/invoking': 'Generando dashboard de ATLAS…',
         'openai/toolInvocation/invoked': 'Dashboard actualizado.',
       },
-    }
+    };
   }
-)
+);
 
 // Transporte HTTP/SSE, CORS, etc. según el SDK utilizado
 ```
@@ -434,6 +440,7 @@ ngrok http 3000
 ### 8.4 Invocar tools y ver widgets
 
 Prueba prompts como:
+
 - "Mostrar mi dashboard semanal de ATLAS"
 - "Actualizar el tablero mensual para el usuario 123"
 
@@ -450,6 +457,7 @@ Deberías ver el widget renderizado inline con datos de ejemplo. Interactúa y v
 ### 9.1 Hosting de assets (CDN)
 
 Opciones: Vercel, Cloudflare, AWS S3 + CloudFront. Requisitos:
+
 - CORS habilitado
 - HTTPS
 - Cache y versionado por hash
@@ -457,8 +465,8 @@ Opciones: Vercel, Cloudflare, AWS S3 + CloudFront. Requisitos:
 Ejemplo de headers (Node/Express):
 
 ```js
-res.setHeader('Access-Control-Allow-Origin', '*')
-res.setHeader('Cache-Control', 'public, max-age=31536000, immutable')
+res.setHeader('Access-Control-Allow-Origin', '*');
+res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
 ```
 
 ### 9.2 Backend MCP (HTTPS)
@@ -482,8 +490,8 @@ WIDGET_BASE_URL=https://cdn.example.com/widgets
 Consumo en Node (dotenv):
 
 ```ts
-import 'dotenv/config'
-const baseUrl = process.env.WIDGET_BASE_URL
+import 'dotenv/config';
+const baseUrl = process.env.WIDGET_BASE_URL;
 ```
 
 ### 9.4 CI/CD
@@ -514,7 +522,7 @@ const baseUrl = process.env.WIDGET_BASE_URL
 
 ## 11. Troubleshooting común
 
-- CORS: "Blocked by CORS policy" → habilita Access-Control-Allow-Origin: * en el servidor de assets
+- CORS: "Blocked by CORS policy" → habilita Access-Control-Allow-Origin: \* en el servidor de assets
 - Tool timeout: reduce payloads, agrega caché, ajusta timeouts
 - JSON Schema inválido: valida tipos, required, enum
 - Estado no persiste: revisa serialización y uso de (set)WidgetState

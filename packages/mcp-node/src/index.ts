@@ -17,10 +17,7 @@ const server = new Server(
 );
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
-  tools: [
-    atlasDashboardTool.definition,
-    atlasWeeklyBoardTool.definition,
-  ],
+  tools: [atlasDashboardTool.definition, atlasWeeklyBoardTool.definition],
 }));
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
@@ -34,10 +31,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 });
 
 server.setRequestHandler(ListResourcesRequestSchema, async () => ({
-  resources: [
-    atlasDashboardResource.definition,
-    atlasWeeklyBoardResource.definition,
-  ],
+  resources: [atlasDashboardResource.definition, atlasWeeklyBoardResource.definition],
 }));
 
 server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
