@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { applySafetyPolicy } from './safety-policy.js';
 
+type HasStructuredContent = { structuredContent?: Record<string, unknown> };
+
 describe('applySafetyPolicy', () => {
   it('blocks unknown tools on high risk with triggers', async () => {
     const res = await applySafetyPolicy(
@@ -8,7 +10,7 @@ describe('applySafetyPolicy', () => {
       { pain: 9, energy: 2, rpe: 9, notes: 'dolor de pecho' },
       async () => ({ content: [{ type: 'text', text: 'should not run' }] })
     );
-    expect((res as any).structuredContent?.blockedTool).toBe('unknown_tool');
+expect((res as HasStructuredContent).structuredContent?.blockedTool).toBe('unknown_tool');
   });
 
   it('requires check-in data before running certain tools', async () => {
@@ -18,6 +20,6 @@ describe('applySafetyPolicy', () => {
       return { content: [{ type: 'text', text: 'should not run' }] };
     });
     expect(called).toBe(false);
-    expect((res as any).structuredContent?.requiresCheckin).toBe(true);
+expect((res as HasStructuredContent).structuredContent?.requiresCheckin).toBe(true);
   });
 });

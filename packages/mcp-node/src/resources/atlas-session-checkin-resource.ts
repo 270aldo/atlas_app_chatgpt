@@ -21,8 +21,8 @@ export const atlasSessionCheckinResource = {
   <title>ATLAS Session Check-in</title>
 </head>
 <body>
-  <div id=\"root\"></div>
-  <script type=\"module\" src=\"${widgetUrl}\"></script>
+  <div id="root"></div>
+  <script type="module" src="${widgetUrl}"></script>
 </body>
 </html>`;
 

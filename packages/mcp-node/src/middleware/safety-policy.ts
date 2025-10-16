@@ -1,5 +1,7 @@
 import { triageCheckin, CheckinPayload, TriageResult } from '../utils/clinical-guardrails.js';
 
+type ProceedResult = { content: unknown; structuredContent?: Record<string, unknown> };
+
 const ALWAYS_ALLOW = new Set(['atlas_session_checkin', 'atlas_safety_review']);
 const CORE_SAFE = new Set(['atlas_session_checkin', 'atlas_dashboard', 'atlas_adaptive_plan', 'atlas_safety_review']);
 
@@ -51,7 +53,7 @@ function requestCheckin(name: string) {
 export async function applySafetyPolicy(
   toolName: string,
   args: unknown,
-  proceed: () => Promise<any>
+  proceed: () => Promise<ProceedResult>
 ) {
   const checkin = extractCheckinFromArgs(args);
 
