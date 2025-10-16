@@ -51,8 +51,9 @@ WIDGET_BASE_URL=https://<subdominio>.ngrok.app pnpm --filter @atlas/mcp-node dev
 
 6. Probar
 
-- "Lista los tools disponibles" → deben aparecer `atlas_dashboard`, `atlas_session_checkin`, `atlas_adaptive_plan`, `atlas_safety_review`
+- "Lista los tools disponibles" → deben aparecer `atlas_dashboard`, `atlas_weekly_board`, `atlas_session_checkin`, `atlas_adaptive_plan`, `atlas_safety_review`
 - "Revisión de seguridad: dolor 8, energía 2, rpe 9, notas 'dolor de pecho'" → debe responder `gate=block`
 - "Abrir check-in de sesión con dolor=3, energía=6, rpe=5" → renderiza el formulario con recomendaciones
 - "Genera mi plan adaptativo semanal con objetivo equilibrio" → muestra el plan semanal
 - "Muestra mi dashboard semanal de ATLAS" → renderiza progreso y avisos
+- "Muestra mi plan semanal" → renderiza el weekly board con sesiones

@@ -7,13 +7,15 @@ import {
   ReadResourceRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 import { atlasDashboardTool } from './tools/atlas-dashboard.js';
+import { atlasWeeklyBoardTool } from './tools/atlas-weekly-board.js';
 import { atlasSessionCheckinTool } from './tools/atlas-session-checkin.js';
-import { atlasDashboardResource } from './resources/atlas-dashboard-resource.js';
-import { atlasSessionCheckinResource } from './resources/atlas-session-checkin-resource.js';
 import { atlasAdaptivePlanTool } from './tools/atlas-adaptive-plan.js';
+import { atlasSafetyReviewTool } from './tools/atlas-safety-review.js';
+import { atlasDashboardResource } from './resources/atlas-dashboard-resource.js';
+import { atlasWeeklyBoardResource } from './resources/atlas-weekly-board-resource.js';
+import { atlasSessionCheckinResource } from './resources/atlas-session-checkin-resource.js';
 import { atlasWeeklyPlanResource } from './resources/atlas-weekly-plan-resource.js';
 import { applySafetyPolicy } from './middleware/safety-policy.js';
-import { atlasSafetyReviewTool } from './tools/atlas-safety-review.js';
 
 const server = new Server(
   { name: 'atlas-mcp-server', version: '0.1.0' },
@@ -23,6 +25,7 @@ const server = new Server(
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
   tools: [
     atlasDashboardTool.definition,
+    atlasWeeklyBoardTool.definition,
     atlasSessionCheckinTool.definition,
     atlasAdaptivePlanTool.definition,
     atlasSafetyReviewTool.definition,
@@ -34,6 +37,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const args = request.params.arguments;
   return applySafetyPolicy(name, args, async () => {
     if (name === 'atlas_dashboard') return atlasDashboardTool.handler(args);
+    if (name === 'atlas_weekly_board') return atlasWeeklyBoardTool.handler(args);
     if (name === 'atlas_session_checkin') return atlasSessionCheckinTool.handler(args);
     if (name === 'atlas_adaptive_plan') return atlasAdaptivePlanTool.handler(args);
     if (name === 'atlas_safety_review') return atlasSafetyReviewTool.handler(args);
@@ -44,6 +48,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 server.setRequestHandler(ListResourcesRequestSchema, async () => ({
   resources: [
     atlasDashboardResource.definition,
+    atlasWeeklyBoardResource.definition,
     atlasSessionCheckinResource.definition,
     atlasWeeklyPlanResource.definition,
   ],
@@ -52,6 +57,9 @@ server.setRequestHandler(ListResourcesRequestSchema, async () => ({
 server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   if (request.params.uri === 'atlas://dashboard/widget') {
     return atlasDashboardResource.handler();
+  }
+  if (request.params.uri === 'atlas://weekly-board/widget') {
+    return atlasWeeklyBoardResource.handler();
   }
   if (request.params.uri === 'atlas://session-checkin/widget') {
     return atlasSessionCheckinResource.handler();
