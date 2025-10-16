@@ -1,25 +1,51 @@
 import React from 'react';
+import { useWidgetProps } from '../utils/useWidgetProps';
+import { DailyNudge } from './DailyNudge';
+import { SafetyNotice } from './SafetyNotice';
+
+interface WeekData {
+  week: number;
+  sessionsCompleted: number;
+  totalSessions: number;
+  streakDays: number;
+  nextSession: string;
+}
 
 interface DashboardProps {
-  weekData: {
-    week: number;
-    sessionsCompleted: number;
-    totalSessions: number;
-    streakDays: number;
-    nextSession: string;
+  weekData?: WeekData;
+  safety?: {
+    risk?: 'low' | 'moderate' | 'high';
+    recommendations?: string[];
+    disclaimer?: string;
   };
 }
 
-export const Dashboard: React.FC<DashboardProps> = ({ weekData }) => {
+const defaultWeekData: WeekData = {
+  week: 1,
+  sessionsCompleted: 0,
+  totalSessions: 3,
+  streakDays: 0,
+  nextSession: 'Hoy',
+};
+
+export const Dashboard: React.FC<DashboardProps> = (props) => {
+  const { weekData = defaultWeekData, safety } = useWidgetProps<DashboardProps>(props);
   const progressPercent = (weekData.sessionsCompleted / weekData.totalSessions) * 100;
 
   return (
     <div className="widget-container">
       <div className="max-w-4xl mx-auto">
+        <DailyNudge />
         <header className="mb-8">
           <h1 className="text-4xl font-bold text-electric-violet mb-2">ATLAS Dashboard</h1>
           <p className="text-xl text-gray-400">Semana {weekData.week} - Tu progreso semanal</p>
         </header>
+
+        <SafetyNotice
+          risk={safety?.risk}
+          recommendations={safety?.recommendations}
+          disclaimer={safety?.disclaimer}
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="card-premium">
@@ -62,8 +88,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ weekData }) => {
         </div>
 
         <div className="flex justify-center">
-          <button className="btn-primary" aria-label="Ir a sesión de hoy">
-            Continuar con mi sesión
+          <button
+            className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+            aria-label="Ir a sesión de hoy"
+            disabled={safety?.risk === 'high'}
+            title={
+              safety?.risk === 'high' ? 'Descanso y movilidad suave recomendados hoy' : undefined
+            }
+          >
+            {safety?.risk === 'high' ? 'Descansar / Movilidad Suave' : 'Continuar con mi sesión'}
           </button>
         </div>
       </div>
