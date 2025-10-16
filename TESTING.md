@@ -36,6 +36,7 @@ WIDGET_BASE_URL=https://<subdominio>.ngrok.app pnpm --filter @atlas/mcp-node dev
 
 5. Configurar en ChatGPT Developer Mode (MCP local via stdio)
    Configurar un comando que ejecute `node` con el `dist/index.js` tras compilar:
+
 ```json
 {
   "atlas": {
