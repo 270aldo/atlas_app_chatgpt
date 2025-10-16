@@ -7,6 +7,7 @@ Esta carpeta contiene documentación de referencia completa sobre el OpenAI Apps
 ## 📚 Documentos Disponibles
 
 ### 1. [OpenAI_Apps_SDK_Reference.md](./OpenAI_Apps_SDK_Reference.md)
+
 **Documento maestro completo** (2,732 líneas) con toda la información sobre el Apps SDK, incluyendo:
 
 - ✅ Resumen ejecutivo y base técnica (MCP)
@@ -23,6 +24,7 @@ Esta carpeta contiene documentación de referencia completa sobre el OpenAI Apps
 ---
 
 ### 2. [MCP_SDK_Guide.md](./MCP_SDK_Guide.md)
+
 **Deep dive en Model Context Protocol** (1,530 líneas) con:
 
 - ✅ Introducción a MCP y su importancia para Apps SDK
@@ -39,6 +41,7 @@ Esta carpeta contiene documentación de referencia completa sobre el OpenAI Apps
 ---
 
 ### 3. [Apps_SDK_Documentation.md](./Apps_SDK_Documentation.md)
+
 **Guía práctica paso a paso** (544 líneas) con:
 
 - ✅ Setup completo del proyecto (Node, pnpm, Python, ngrok)
@@ -124,12 +127,12 @@ ATLAS es una aplicación especializada en **fitness para adultos mayores** que v
 
 ## 📊 Resumen de Contenido
 
-| Documento | Líneas | Enfoque | Audiencia |
-|-----------|--------|---------|-----------|
-| **OpenAI_Apps_SDK_Reference.md** | 2,732 | Comprensivo, ATLAS-específico | Agentes IA, Product, Full-stack |
-| **MCP_SDK_Guide.md** | 1,530 | Técnico profundo (MCP) | Backend devs, Arquitectos |
-| **Apps_SDK_Documentation.md** | 544 | Práctico, paso a paso | Frontend/Full-stack, DevOps |
-| **README.md** (este archivo) | ~200 | Índice y navegación | Todo el equipo |
+| Documento                        | Líneas | Enfoque                       | Audiencia                       |
+| -------------------------------- | ------ | ----------------------------- | ------------------------------- |
+| **OpenAI_Apps_SDK_Reference.md** | 2,732  | Comprensivo, ATLAS-específico | Agentes IA, Product, Full-stack |
+| **MCP_SDK_Guide.md**             | 1,530  | Técnico profundo (MCP)        | Backend devs, Arquitectos       |
+| **Apps_SDK_Documentation.md**    | 544    | Práctico, paso a paso         | Frontend/Full-stack, DevOps     |
+| **README.md** (este archivo)     | ~200   | Índice y navegación           | Todo el equipo                  |
 
 **Total:** ~5,000 líneas de documentación técnica actualizada.
 
@@ -146,6 +149,7 @@ ATLAS es una aplicación especializada en **fitness para adultos mayores** que v
   - Starters de la comunidad (Vercel Labs, LastMile)
 
 Para actualizar esta documentación:
+
 1. Verificar cambios en repos oficiales y anuncios de OpenAI
 2. Actualizar ejemplos de código si hay breaking changes
 3. Revisar nuevos widgets o metadatos MCP agregados

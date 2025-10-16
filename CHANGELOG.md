@@ -8,6 +8,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 ## [Unreleased]
 
 ### Added
+
 - Estructura inicial del proyecto
 - Documentación completa del OpenAI Apps SDK en `/Refs`
 - Configuración de Git y Gitflow
@@ -18,6 +19,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 ## [0.1.0] - 2025-10-14
 
 ### Added
+
 - ✅ Inicialización del repositorio Git
 - ✅ Creación de `.gitignore` profesional
 - ✅ Documentación de referencia:
@@ -35,6 +37,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 - ✅ Templates de GitHub para PRs e issues
 
 ### Documentation
+
 - Documentación exhaustiva del Apps SDK con foco en ATLAS
 - Sección específica para adultos mayores con métricas de longevidad
 - Guías de compliance y seguridad para salud/fitness

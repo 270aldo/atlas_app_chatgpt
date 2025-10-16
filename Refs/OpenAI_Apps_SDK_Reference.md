@@ -1,7 +1,7 @@
 # OpenAI Apps SDK - Referencia Completa
 
 > **Nota:** Esta documentación está optimizada para ser usada como contexto por agentes de IA durante el desarrollo del proyecto ATLAS.
-> 
+>
 > **Última actualización:** 14 de Octubre, 2025
 
 ---
@@ -33,6 +33,7 @@
 El **OpenAI Apps SDK** es un framework nuevo (en preview) que permite crear **aplicaciones interactivas que viven dentro de ChatGPT**. Estas apps se invocan por lenguaje natural o son sugeridas por el modelo y ofrecen interfaces ricas directamente en el chat.
 
 **Puntos clave:**
+
 - 🚀 **Canal de distribución nativo**: ChatGPT se convierte en una plataforma donde los usuarios pueden descubrir y usar tu app sin salir del chat
 - 🛠️ **Construido sobre MCP**: Utiliza Model Context Protocol (estándar abierto) para conectar herramientas con LLMs
 - 🎨 **UI interactiva**: Widgets embebidos que se renderizan inline en las respuestas del asistente
@@ -41,6 +42,7 @@ El **OpenAI Apps SDK** es un framework nuevo (en preview) que permite crear **ap
 ### Por qué importa
 
 ChatGPT tiene **millones de usuarios activos diarios**. Al construir una app dentro de ChatGPT:
+
 - ✅ Eliminas fricción de onboarding (los usuarios ya están en ChatGPT)
 - ✅ Aprovechas el lenguaje natural como interfaz primaria
 - ✅ Accedes a un directorio/app store integrado (próximamente)
@@ -59,6 +61,7 @@ ChatGPT tiene **millones de usuarios activos diarios**. Al construir una app den
 ### Model Context Protocol (MCP)
 
 MCP es un **protocolo open-source** creado para conectar LLMs con herramientas externas, datos y UIs. Es transport-agnostic y define contratos claros para:
+
 - **Tools**: Funciones que el modelo puede invocar
 - **Resources**: Datos o contenido que el modelo puede consultar
 - **Prompts**: Plantillas pre-configuradas
@@ -66,6 +69,7 @@ MCP es un **protocolo open-source** creado para conectar LLMs con herramientas e
 ### Apps SDK como Extensión de MCP
 
 El **Apps SDK extiende MCP** para incluir metadatos que permiten:
+
 - Renderizar **widgets HTML** inline en ChatGPT
 - Gestionar **estado efímero** entre el widget y el servidor
 - Manejar **OAuth 2.1** para autenticación segura
@@ -94,6 +98,7 @@ El **Apps SDK extiende MCP** para incluir metadatos que permiten:
 ### Distribución
 
 OpenAI planea lanzar un **directorio de apps** (similar a una app store) dentro de ChatGPT donde:
+
 - Los usuarios descubrirán apps recomendadas por el asistente
 - Los desarrolladores publicarán tras pasar verificación
 - Se habilitarán opciones de monetización y comercio
@@ -107,6 +112,7 @@ Una app para ChatGPT consta de **tres componentes principales**:
 ### 1. MCP Server (Backend)
 
 Tu backend expone **tools** que ChatGPT puede invocar. Cada tool:
+
 - Define un **JSON Schema** para inputs
 - Retorna **contenido estructurado** + opcionalmente HTML para UI
 - Incluye **metadatos** que indican a ChatGPT cómo renderizar el widget
@@ -140,6 +146,7 @@ Tu backend expone **tools** que ChatGPT puede invocar. Cada tool:
 Los widgets son **componentes React** empaquetados como bundles HTML/JS/CSS que se renderizan en un iframe dentro de ChatGPT.
 
 **Características:**
+
 - Construidos con **React + Tailwind CSS**
 - Empaquetados con **Vite** (múltiples entry points)
 - Hospedados en un **CDN** (CORS habilitado)
@@ -181,13 +188,13 @@ createRoot(document.getElementById('pizza-list-root')).render(<PizzaListWidget /
 
 Los metadatos en `_meta` indican a ChatGPT cómo manejar la respuesta del tool:
 
-| Metadato | Descripción | Ejemplo |
-|----------|-------------|---------|
-| `openai/outputTemplate` | URI del widget HTML a renderizar | `"ui://widget/pizza-list.html"` |
-| `openai/widgetAccessible` | Indica que el resultado puede mostrarse como widget | `true` |
-| `openai/resultCanProduceWidget` | El tool puede producir un widget | `true` |
-| `openai/toolInvocation/invoking` | Mensaje mientras ejecuta (loading) | `"Searching restaurants..."` |
-| `openai/toolInvocation/invoked` | Mensaje al completar | `"Found 12 places!"` |
+| Metadato                         | Descripción                                         | Ejemplo                         |
+| -------------------------------- | --------------------------------------------------- | ------------------------------- |
+| `openai/outputTemplate`          | URI del widget HTML a renderizar                    | `"ui://widget/pizza-list.html"` |
+| `openai/widgetAccessible`        | Indica que el resultado puede mostrarse como widget | `true`                          |
+| `openai/resultCanProduceWidget`  | El tool puede producir un widget                    | `true`                          |
+| `openai/toolInvocation/invoking` | Mensaje mientras ejecuta (loading)                  | `"Searching restaurants..."`    |
+| `openai/toolInvocation/invoked`  | Mensaje al completar                                | `"Found 12 places!"`            |
 
 ---
 
@@ -200,6 +207,7 @@ OpenAI proporciona una **galería de widgets de ejemplo** llamada **Pizzaz**. Es
 **Uso:** Listas de items con imágenes, títulos, descripciones, ratings.
 
 **Props esperados:**
+
 ```typescript
 {
   places: Array<{
@@ -208,11 +216,12 @@ OpenAI proporciona una **galería de widgets de ejemplo** llamada **Pizzaz**. Es
     thumbnail: string;
     city: string;
     rating: number;
-  }>
+  }>;
 }
 ```
 
 **Características:**
+
 - Diseño responsive (mobile-first)
 - Hover states
 - Iconos con Lucide React
@@ -225,17 +234,20 @@ import { Star, PlusCircle } from 'lucide-react';
 
 function PizzaList() {
   const places = markers?.places || [];
-  
+
   return (
     <div className="antialiased w-full text-black px-4 pb-2 border border-black/10 rounded-2xl bg-white">
       <div className="flex items-center gap-4 border-b border-black/5 py-4">
-        <img src="https://persistent.oaistatic.com/pizzaz/title.png" className="w-16 h-16 rounded-xl" />
+        <img
+          src="https://persistent.oaistatic.com/pizzaz/title.png"
+          className="w-16 h-16 rounded-xl"
+        />
         <div>
           <div className="text-xl font-medium">National Best Pizza List</div>
           <div className="text-sm text-black/60">Ranking of best pizzerias</div>
         </div>
       </div>
-      
+
       <div className="flex flex-col">
         {places.slice(0, 7).map((place, i) => (
           <div key={place.id} className="px-3 -mx-2 rounded-2xl hover:bg-black/5">
@@ -265,6 +277,7 @@ function PizzaList() {
 **Uso:** Carrusel horizontal de imágenes/lugares con navegación.
 
 **Props esperados:**
+
 ```typescript
 {
   items: Array<{
@@ -272,11 +285,12 @@ function PizzaList() {
     title: string;
     image: string;
     description: string;
-  }>
+  }>;
 }
 ```
 
 **Características:**
+
 - Scroll horizontal con snap
 - Navegación con flechas
 - Auto-scroll opcional
@@ -287,6 +301,7 @@ function PizzaList() {
 **Uso:** Mapa interactivo con markers (usa Mapbox GL).
 
 **Props esperados:**
+
 ```typescript
 {
   markers: Array<{
@@ -302,6 +317,7 @@ function PizzaList() {
 ```
 
 **Características:**
+
 - Mapa interactivo con Mapbox
 - Popups customizables
 - Clustering de markers (opcional)
@@ -312,6 +328,7 @@ function PizzaList() {
 **Uso:** Galería de fotos en grid con lightbox.
 
 **Props esperados:**
+
 ```typescript
 {
   images: Array<{
@@ -319,11 +336,12 @@ function PizzaList() {
     url: string;
     thumbnail: string;
     caption: string;
-  }>
+  }>;
 }
 ```
 
 **Características:**
+
 - Grid responsive
 - Lightbox para ver en grande
 - Lazy loading
@@ -334,6 +352,7 @@ function PizzaList() {
 **Uso:** Reproductor de video embebido.
 
 **Props esperados:**
+
 ```typescript
 {
   videoUrl: string;
@@ -343,6 +362,7 @@ function PizzaList() {
 ```
 
 **Características:**
+
 - Player HTML5 nativo
 - Controles custom
 - Poster/thumbnail inicial
@@ -440,13 +460,13 @@ ChatGPT expone un objeto global `window.openai` en widgets para gestionar estado
 interface OpenAI {
   // Establecer estado del widget (persiste durante la sesión)
   setWidgetState(state: Record<string, any>): void;
-  
+
   // Obtener estado actual
   widgetState: Record<string, any>;
-  
+
   // Props pasados desde el MCP server
   widgetProps: Record<string, any>;
-  
+
   // Información del usuario (si está autenticado)
   user?: {
     id: string;
@@ -463,7 +483,7 @@ import { useWidgetState } from './use-widget-state';
 
 function ExerciseSelector() {
   const [selected, setSelected] = useWidgetState<string[]>([]);
-  
+
   const toggleExercise = (id: string) => {
     setSelected((prev) =>
       prev.includes(id)
@@ -471,7 +491,7 @@ function ExerciseSelector() {
         : [...prev, id]
     );
   };
-  
+
   return (
     <div>
       {exercises.map((ex) => (
@@ -498,18 +518,18 @@ export function useWidgetState<T extends Record<string, any>>(
   defaultState: T | (() => T)
 ): readonly [T, (state: SetStateAction<T>) => void] {
   const widgetStateFromWindow = window.openai?.widgetState as T;
-  
+
   const [widgetState, _setWidgetState] = useState<T>(() => {
     if (widgetStateFromWindow != null) {
       return widgetStateFromWindow;
     }
     return typeof defaultState === 'function' ? defaultState() : defaultState;
   });
-  
+
   useEffect(() => {
     _setWidgetState(widgetStateFromWindow);
   }, [widgetStateFromWindow]);
-  
+
   const setWidgetState = useCallback((state: SetStateAction<T>) => {
     _setWidgetState((prevState) => {
       const newState = typeof state === 'function' ? state(prevState) : state;
@@ -519,7 +539,7 @@ export function useWidgetState<T extends Record<string, any>>(
       return newState;
     });
   }, []);
-  
+
   return [widgetState, setWidgetState] as const;
 }
 ```
@@ -527,6 +547,7 @@ export function useWidgetState<T extends Record<string, any>>(
 ### Datos Durables (Backend)
 
 Para datos que deben persistir más allá de la sesión:
+
 - ✅ Almacena en tu base de datos (PostgreSQL, MongoDB, etc.)
 - ✅ Asocia datos con `userId` obtenido del token OAuth
 - ✅ Implementa políticas de retención apropiadas
@@ -577,8 +598,9 @@ Si prefieres no usar ngrok, despliega tu servidor en un servicio que proporcione
 ### Testing
 
 Una vez conectado:
+
 - Haz una pregunta que active tu tool
-  - Ejemplo: *"Show me this week's workout plan"*
+  - Ejemplo: _"Show me this week's workout plan"_
 - ChatGPT invocará tu tool automáticamente
 - El widget debe renderizarse inline
 - Puedes interactuar con el widget
@@ -587,6 +609,7 @@ Una vez conectado:
 ### Debugging
 
 **Logs del servidor:**
+
 ```bash
 # Revisa logs en tiempo real
 tail -f server.log
@@ -596,12 +619,14 @@ console.log('Tool invoked:', toolName, args);
 ```
 
 **Logs de ngrok:**
+
 ```bash
 # ngrok muestra requests en tiempo real
 # Puedes ver headers, body, respuestas
 ```
 
 **Network tab del navegador:**
+
 - Abre DevTools en ChatGPT (F12)
 - Ve a la tab Network
 - Filtra por "mcp" para ver requests
@@ -628,11 +653,15 @@ import { z } from 'zod';
 
 const WorkoutInputSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  exercises: z.array(z.object({
-    name: z.string().min(1).max(100),
-    sets: z.number().int().min(1).max(20),
-    reps: z.number().int().min(1).max(100),
-  })).max(30),
+  exercises: z
+    .array(
+      z.object({
+        name: z.string().min(1).max(100),
+        sets: z.number().int().min(1).max(20),
+        reps: z.number().int().min(1).max(100),
+      })
+    )
+    .max(30),
   notes: z.string().max(500).optional(),
 });
 
@@ -649,6 +678,7 @@ async function handleCreateWorkout(args: unknown) {
 ### Protección contra XSS
 
 **En widgets React:**
+
 - ✅ Usa React (escapa automáticamente)
 - ❌ **Nunca** uses `dangerouslySetInnerHTML` con contenido no confiable
 - ✅ Sanitiza URLs con bibliotecas como `validator`
@@ -676,6 +706,7 @@ app.use('/mcp', limiter);
 > ⚠️ **Advertencia:** Si tu app maneja información de salud (PHI) o pagos (PCI), debes cumplir con regulaciones específicas.
 
 **Para apps de fitness/salud como ATLAS:**
+
 - ✅ **No almacenes PHI sin cifrado** (AES-256 o superior)
 - ✅ Usa **HTTPS** para todas las comunicaciones
 - ✅ Implementa **logs de auditoría** para accesos a datos sensibles
@@ -720,15 +751,15 @@ Para publicar tu app en el directorio oficial de ChatGPT, deberás cumplir con:
 
 Apps disponibles en ChatGPT (Oct 2025):
 
-| App | Funcionalidad | Widgets Principales |
-|-----|---------------|---------------------|
-| **Booking.com** | Búsqueda de hoteles y vuelos | Mapas, listas de resultados |
-| **Canva** | Diseño gráfico y presentaciones | Canvas interactivo, galería de plantillas |
-| **Coursera** | Cursos y certificaciones | Lista de cursos, preview de lecciones |
-| **Expedia** | Viajes y alojamiento | Mapas, carruseles de destinos |
-| **Figma** | Colaboración en diseño | Preview de archivos, comentarios |
-| **Spotify** | Música y playlists | Reproductor, listas de canciones |
-| **Zillow** | Búsqueda de propiedades | Mapas con listings, fichas de inmuebles |
+| App             | Funcionalidad                   | Widgets Principales                       |
+| --------------- | ------------------------------- | ----------------------------------------- |
+| **Booking.com** | Búsqueda de hoteles y vuelos    | Mapas, listas de resultados               |
+| **Canva**       | Diseño gráfico y presentaciones | Canvas interactivo, galería de plantillas |
+| **Coursera**    | Cursos y certificaciones        | Lista de cursos, preview de lecciones     |
+| **Expedia**     | Viajes y alojamiento            | Mapas, carruseles de destinos             |
+| **Figma**       | Colaboración en diseño          | Preview de archivos, comentarios          |
+| **Spotify**     | Música y playlists              | Reproductor, listas de canciones          |
+| **Zillow**      | Búsqueda de propiedades         | Mapas con listings, fichas de inmuebles   |
 
 ### Patrones UX Comunes
 
@@ -749,6 +780,7 @@ Apps disponibles en ChatGPT (Oct 2025):
 **Estrellas:** 1,390+ (Octubre 2025)
 
 **Contenido:**
+
 - Galería de widgets **Pizzaz** (List, Carousel, Map, Albums, Video)
 - Servidor MCP en **Node.js** (`pizzaz_server_node`)
 - Servidor MCP en **Python** (`pizzaz_server_python`)
@@ -867,11 +899,11 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 // 3. Implementar handler del tool
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
-  
+
   if (name === 'create_workout') {
     const validated = WorkoutSchema.parse(args);
     const workout = await createWorkout(validated);
-    
+
     return {
       content: [
         {
@@ -889,7 +921,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       },
     };
   }
-  
+
   throw new Error(`Unknown tool: ${name}`);
 });
 
@@ -931,7 +963,7 @@ class WorkoutInput(BaseModel):
 async def create_workout(workout: WorkoutInput):
     # Lógica de creación
     result = await db.create_workout(workout)
-    
+
     return {
         "content": [
             {
@@ -1054,49 +1086,50 @@ ATLAS resuelve necesidades específicas de adultos mayores:
 async function handleIntakeScreen(input: IntakeInput): Promise<IntakeResult> {
   // Calcular banderas rojas
   const redFlags = [];
-  
+
   if (input.recent_falls) {
     redFlags.push({
-      severity: "high",
-      message: "Recent falls detected. Balance training is priority.",
-      recommendation: "Start with seated exercises and chair support.",
+      severity: 'high',
+      message: 'Recent falls detected. Balance training is priority.',
+      recommendation: 'Start with seated exercises and chair support.',
     });
   }
-  
+
   if (input.chronic_pain?.has_pain && input.chronic_pain.severity >= 7) {
     redFlags.push({
-      severity: "high",
-      message: "Chronic pain > 7/10 reported.",
-      recommendation: "Consult with a physical therapist before starting. We'll focus on pain-free movements.",
+      severity: 'high',
+      message: 'Chronic pain > 7/10 reported.',
+      recommendation:
+        "Consult with a physical therapist before starting. We'll focus on pain-free movements.",
     });
   }
-  
-  if (input.medical_conditions.includes("heart_disease")) {
+
+  if (input.medical_conditions.includes('heart_disease')) {
     redFlags.push({
-      severity: "medium",
-      message: "Heart disease detected.",
-      recommendation: "Ensure medical clearance. Monitor heart rate during exercise.",
+      severity: 'medium',
+      message: 'Heart disease detected.',
+      recommendation: 'Ensure medical clearance. Monitor heart rate during exercise.',
     });
   }
-  
+
   // Generar perfil
   const profile = {
     userId: input.userId,
-    ageGroup: input.age >= 75 ? "75+" : "55-74",
-    riskLevel: redFlags.length > 1 ? "high" : redFlags.length === 1 ? "medium" : "low",
+    ageGroup: input.age >= 75 ? '75+' : '55-74',
+    riskLevel: redFlags.length > 1 ? 'high' : redFlags.length === 1 ? 'medium' : 'low',
     redFlags,
     recommendedPrograms: determinePrograms(input),
     createdAt: new Date().toISOString(),
   };
-  
+
   await db.profiles.insert(profile);
-  
+
   return {
     profile,
     nextSteps: [
-      "Review your personalized plan",
-      "Watch the safety video (2 min)",
-      redFlags.length > 0 ? "Consult with healthcare provider if needed" : null,
+      'Review your personalized plan',
+      'Watch the safety video (2 min)',
+      redFlags.length > 0 ? 'Consult with healthcare provider if needed' : null,
     ].filter(Boolean),
   };
 }
@@ -1117,7 +1150,7 @@ function ScreeningResultWidget({ profile, nextSteps }) {
           <p className="text-gray-600">Risk Level: {profile.riskLevel.toUpperCase()}</p>
         </div>
       </div>
-      
+
       {profile.redFlags.length > 0 && (
         <div className="mb-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
           <h3 className="font-semibold text-yellow-800 mb-2">⚠️ Important Notes:</h3>
@@ -1129,7 +1162,7 @@ function ScreeningResultWidget({ profile, nextSteps }) {
           ))}
         </div>
       )}
-      
+
       <div className="bg-white rounded-xl p-4 shadow-sm">
         <h3 className="font-semibold text-gray-800 mb-3">Next Steps:</h3>
         <ol className="space-y-2">
@@ -1236,7 +1269,7 @@ function ScreeningResultWidget({ profile, nextSteps }) {
 function WeeklyBoardWidget({ plan }) {
   const [selectedDay, setSelectedDay] = useState(0);
   const session = plan.sessions[selectedDay];
-  
+
   return (
     <div className="max-w-4xl mx-auto">
       {/* Selector de días */}
@@ -1256,7 +1289,7 @@ function WeeklyBoardWidget({ plan }) {
           </button>
         ))}
       </div>
-      
+
       {/* Detalles de la sesión */}
       <div className="bg-white rounded-2xl p-6 shadow-lg">
         <div className="flex items-center justify-between mb-6">
@@ -1268,18 +1301,19 @@ function WeeklyBoardWidget({ plan }) {
             Start Workout
           </button>
         </div>
-        
+
         {/* Lista de ejercicios */}
         <div className="space-y-4">
           {session.exercises.map((ex, i) => (
-            <div key={ex.id} className="flex gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
-              <img
-                src={ex.thumbnail}
-                alt={ex.name}
-                className="w-24 h-24 rounded-lg object-cover"
-              />
+            <div
+              key={ex.id}
+              className="flex gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition"
+            >
+              <img src={ex.thumbnail} alt={ex.name} className="w-24 h-24 rounded-lg object-cover" />
               <div className="flex-1">
-                <h3 className="font-semibold text-lg text-gray-800">{i + 1}. {ex.name}</h3>
+                <h3 className="font-semibold text-lg text-gray-800">
+                  {i + 1}. {ex.name}
+                </h3>
                 <div className="flex gap-4 mt-1 text-sm text-gray-600">
                   {ex.sets && <span>{ex.sets} sets</span>}
                   {ex.reps && <span>{ex.reps} reps</span>}
@@ -1354,44 +1388,44 @@ function WeeklyBoardWidget({ plan }) {
 async function handleSessionCheckin(input: CheckinInput): Promise<CheckinResult> {
   const session = await db.sessions.findById(input.session_id);
   let adjustments = [];
-  let recommendation = "proceed";
-  
+  let recommendation = 'proceed';
+
   // Lógica de ajuste basada en dolor
   if (input.pain_level >= 7) {
-    recommendation = "skip";
+    recommendation = 'skip';
     adjustments.push({
-      type: "critical",
+      type: 'critical',
       message: "High pain level detected. It's best to rest today.",
-      action: "Skip this session and focus on gentle stretching.",
+      action: 'Skip this session and focus on gentle stretching.',
     });
   } else if (input.pain_level >= 5) {
-    recommendation = "reduce";
+    recommendation = 'reduce';
     adjustments.push({
-      type: "warning",
+      type: 'warning',
       message: "Moderate pain detected. Let's reduce intensity.",
-      action: "Reduce volume by 30% and avoid exercises that increase pain.",
+      action: 'Reduce volume by 30% and avoid exercises that increase pain.',
     });
-    
+
     // Modificar plan de sesión
-    session.exercises = session.exercises.map(ex => ({
+    session.exercises = session.exercises.map((ex) => ({
       ...ex,
       sets: Math.ceil(ex.sets * 0.7),
-      modification: "Use easier variation",
+      modification: 'Use easier variation',
     }));
   }
-  
+
   // Lógica basada en energía
   if (input.energy_level <= 3) {
-    recommendation = recommendation === "proceed" ? "reduce" : recommendation;
+    recommendation = recommendation === 'proceed' ? 'reduce' : recommendation;
     adjustments.push({
-      type: "warning",
+      type: 'warning',
       message: "Low energy today. Let's take it easy.",
-      action: "Shorten workout by 10 minutes and increase rest periods.",
+      action: 'Shorten workout by 10 minutes and increase rest periods.',
     });
-    
+
     session.duration = Math.ceil(session.duration * 0.7);
   }
-  
+
   // Guardar check-in en DB
   await db.checkins.insert({
     sessionId: input.session_id,
@@ -1401,7 +1435,7 @@ async function handleSessionCheckin(input: CheckinInput): Promise<CheckinResult>
     recommendation,
     createdAt: new Date().toISOString(),
   });
-  
+
   return {
     recommendation,
     adjustments,
@@ -1412,7 +1446,7 @@ async function handleSessionCheckin(input: CheckinInput): Promise<CheckinResult>
 
 function getMotivationalMessage(input: CheckinInput): string {
   if (input.pain_level >= 7 || input.energy_level <= 2) {
-    return "Rest is part of progress. Listen to your body today. 💙";
+    return 'Rest is part of progress. Listen to your body today. 💙';
   }
   if (input.energy_level >= 8) {
     return "Great energy today! Let's make the most of it. 💪";
@@ -1488,20 +1522,20 @@ function getMotivationalMessage(input: CheckinInput): string {
 ```css
 :root {
   /* Primarios */
-  --color-primary: #4F46E5; /* Índigo vibrante */
-  --color-secondary: #06B6D4; /* Cyan */
-  
+  --color-primary: #4f46e5; /* Índigo vibrante */
+  --color-secondary: #06b6d4; /* Cyan */
+
   /* Neutros */
-  --color-text: #1F2937; /* Gris oscuro */
-  --color-text-light: #6B7280;
-  --color-bg: #FFFFFF;
-  --color-bg-light: #F9FAFB;
-  
+  --color-text: #1f2937; /* Gris oscuro */
+  --color-text-light: #6b7280;
+  --color-bg: #ffffff;
+  --color-bg-light: #f9fafb;
+
   /* Estados */
-  --color-success: #10B981; /* Verde */
-  --color-warning: #F59E0B; /* Ámbar */
-  --color-error: #EF4444; /* Rojo */
-  
+  --color-success: #10b981; /* Verde */
+  --color-warning: #f59e0b; /* Ámbar */
+  --color-error: #ef4444; /* Rojo */
+
   /* Tipografía */
   --font-base: 20px;
   --font-large: 24px;
@@ -1528,29 +1562,33 @@ function ExerciseCard({ exercise, onStartVideo }) {
         >
           <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
             <svg className="w-8 h-8 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+              <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
             </svg>
           </div>
         </button>
       </div>
-      
+
       {/* Información del ejercicio */}
-      <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-        {exercise.name}
-      </h3>
-      
+      <h3 className="text-2xl font-semibold text-gray-800 mb-2">{exercise.name}</h3>
+
       <div className="flex items-center gap-4 text-lg text-gray-600 mb-4">
-        {exercise.sets && <span className="flex items-center gap-1">
-          <span className="font-medium">{exercise.sets}</span> sets
-        </span>}
-        {exercise.reps && <span className="flex items-center gap-1">
-          <span className="font-medium">{exercise.reps}</span> reps
-        </span>}
-        {exercise.duration && <span className="flex items-center gap-1">
-          <span className="font-medium">{exercise.duration}s</span> hold
-        </span>}
+        {exercise.sets && (
+          <span className="flex items-center gap-1">
+            <span className="font-medium">{exercise.sets}</span> sets
+          </span>
+        )}
+        {exercise.reps && (
+          <span className="flex items-center gap-1">
+            <span className="font-medium">{exercise.reps}</span> reps
+          </span>
+        )}
+        {exercise.duration && (
+          <span className="flex items-center gap-1">
+            <span className="font-medium">{exercise.duration}s</span> hold
+          </span>
+        )}
       </div>
-      
+
       {/* Cues (consejos) */}
       <div className="bg-blue-50 rounded-lg p-4 mb-4">
         <h4 className="font-semibold text-blue-900 mb-2">💡 Key Cues:</h4>
@@ -1563,16 +1601,14 @@ function ExerciseCard({ exercise, onStartVideo }) {
           ))}
         </ul>
       </div>
-      
+
       {/* Safety note */}
       {exercise.safetyNote && (
         <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
-          <p className="text-yellow-800 font-medium">
-            ⚠️ {exercise.safetyNote}
-          </p>
+          <p className="text-yellow-800 font-medium">⚠️ {exercise.safetyNote}</p>
         </div>
       )}
-      
+
       {/* Modificaciones */}
       <div className="grid grid-cols-2 gap-3">
         <button className="px-4 py-3 bg-green-100 text-green-800 rounded-lg font-medium hover:bg-green-200">
@@ -1591,17 +1627,17 @@ function ExerciseCard({ exercise, onStartVideo }) {
 
 #### Métricas Clave
 
-| Categoría | Métrica | Por qué importa | Cálculo |
-|-----------|---------|-----------------|---------|
-| **Adherencia** | % sesiones completadas | Predice resultados a largo plazo | (completadas / planificadas) × 100 |
-| **Volumen/Carga** | Total minutos activos semanales | Indica estímulo acumulado | Σ duración de sesiones |
-| **Progresión** | % aumento en carga/reps | Evidencia de adaptación | ((semana_n - semana_1) / semana_1) × 100 |
-| **Funcionalidad** | Puntaje Time Up & Go | Predictor de independencia | Tiempo en segundos (< 12s = bajo riesgo) |
-| **Funcionalidad** | Puntaje One Leg Stand | Indicador de balance | Tiempo en segundos (> 10s = buen balance) |
-| **Salud percibida** | Promedio dolor diario | Detecta overtraining | Media de check-ins semanales |
-| **Salud percibida** | Promedio energía | Indica recuperación | Media de check-ins semanales |
-| **Alertas** | Días consecutivos omitidos | Previene abandono | Contador de sesiones skipped |
-| **Comparación** | Percentil vs cohorte similar | Motivación y contexto | Ranking anónimo por edad/género |
+| Categoría           | Métrica                         | Por qué importa                  | Cálculo                                   |
+| ------------------- | ------------------------------- | -------------------------------- | ----------------------------------------- |
+| **Adherencia**      | % sesiones completadas          | Predice resultados a largo plazo | (completadas / planificadas) × 100        |
+| **Volumen/Carga**   | Total minutos activos semanales | Indica estímulo acumulado        | Σ duración de sesiones                    |
+| **Progresión**      | % aumento en carga/reps         | Evidencia de adaptación          | ((semana_n - semana_1) / semana_1) × 100  |
+| **Funcionalidad**   | Puntaje Time Up & Go            | Predictor de independencia       | Tiempo en segundos (< 12s = bajo riesgo)  |
+| **Funcionalidad**   | Puntaje One Leg Stand           | Indicador de balance             | Tiempo en segundos (> 10s = buen balance) |
+| **Salud percibida** | Promedio dolor diario           | Detecta overtraining             | Media de check-ins semanales              |
+| **Salud percibida** | Promedio energía                | Indica recuperación              | Media de check-ins semanales              |
+| **Alertas**         | Días consecutivos omitidos      | Previene abandono                | Contador de sesiones skipped              |
+| **Comparación**     | Percentil vs cohorte similar    | Motivación y contexto            | Ranking anónimo por edad/género           |
 
 #### Vistas de Dashboard
 
@@ -1616,7 +1652,7 @@ function DashboardHome({ metrics }) {
         <h1 className="text-3xl font-bold mb-2">Welcome back, {metrics.userName}! 👋</h1>
         <p className="text-xl opacity-90">You're on week {metrics.currentWeek} of your journey</p>
       </div>
-      
+
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <KpiCard
@@ -1644,13 +1680,13 @@ function DashboardHome({ metrics }) {
           color="purple"
         />
       </div>
-      
+
       {/* Gráfico de carga semanal */}
       <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Weekly Activity</h2>
         <WeeklyVolumeChart data={metrics.weeklyVolume} />
       </div>
-      
+
       {/* Alertas (si existen) */}
       {metrics.alerts.length > 0 && (
         <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg">
@@ -1673,12 +1709,14 @@ function KpiCard({ title, value, change, trend, icon, color }) {
     blue: 'bg-blue-50 text-blue-800 border-blue-200',
     purple: 'bg-purple-50 text-purple-800 border-purple-200',
   };
-  
+
   return (
     <div className={`rounded-xl p-6 border-2 ${colorClasses[color]}`}>
       <div className="flex items-center justify-between mb-4">
         <span className="text-4xl">{icon}</span>
-        <span className={`text-sm font-medium ${trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
+        <span
+          className={`text-sm font-medium ${trend === 'up' ? 'text-green-600' : 'text-red-600'}`}
+        >
           {change}
         </span>
       </div>
@@ -1696,7 +1734,7 @@ function MobilityDashboard({ data }) {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Balance & Mobility Progress</h1>
-      
+
       {/* Gráfico de tendencia One Leg Stand */}
       <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">One Leg Stand Test</h2>
@@ -1709,7 +1747,7 @@ function MobilityDashboard({ data }) {
           targetLabel="Target: 10s+ (good balance)"
         />
       </div>
-      
+
       {/* Comparación semanal */}
       <div className="bg-white rounded-2xl p-6 shadow-lg">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">This Week vs Last Week</h2>
@@ -1740,7 +1778,7 @@ function WellnessDashboard({ data }) {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Pain & Wellness Tracking</h1>
-      
+
       {/* Heatmap de dolor */}
       <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Pain Levels (Last 30 Days)</h2>
@@ -1749,7 +1787,7 @@ function WellnessDashboard({ data }) {
           🟢 0-2: Minimal · 🟡 3-5: Moderate · 🟠 6-7: High · 🔴 8-10: Severe
         </p>
       </div>
-      
+
       {/* Gráfico de energía vs dolor */}
       <div className="bg-white rounded-2xl p-6 shadow-lg">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Energy vs Pain Correlation</h2>
@@ -1761,13 +1799,15 @@ function WellnessDashboard({ data }) {
           ]}
         />
       </div>
-      
+
       {/* Insights automáticos */}
       {data.insights.length > 0 && (
         <div className="bg-blue-50 rounded-2xl p-6 mt-6">
           <h3 className="text-xl font-semibold text-blue-900 mb-3">💡 Insights</h3>
           {data.insights.map((insight, i) => (
-            <p key={i} className="text-blue-800 mb-2">{insight}</p>
+            <p key={i} className="text-blue-800 mb-2">
+              {insight}
+            </p>
           ))}
         </div>
       )}
@@ -1788,40 +1828,42 @@ async function computeDailyAggregates(userId: string, date: string) {
     date,
     status: 'completed',
   });
-  
+
   const checkins = await db.checkins.find({
     userId,
     date,
   });
-  
+
   const aggregate = {
     userId,
     date,
-    
+
     // Adherencia
     sessionsPlanned: await db.sessions.count({ userId, date }),
     sessionsCompleted: sessions.length,
     adherenceRate: (sessions.length / plannedCount) * 100,
-    
+
     // Volumen
     totalMinutes: sessions.reduce((sum, s) => sum + s.duration, 0),
     totalExercises: sessions.reduce((sum, s) => sum + s.exercises.length, 0),
-    
+
     // Salud percibida
-    avgPainLevel: checkins.length > 0
-      ? checkins.reduce((sum, c) => sum + c.painLevel, 0) / checkins.length
-      : null,
-    avgEnergyLevel: checkins.length > 0
-      ? checkins.reduce((sum, c) => sum + c.energyLevel, 0) / checkins.length
-      : null,
-    
+    avgPainLevel:
+      checkins.length > 0
+        ? checkins.reduce((sum, c) => sum + c.painLevel, 0) / checkins.length
+        : null,
+    avgEnergyLevel:
+      checkins.length > 0
+        ? checkins.reduce((sum, c) => sum + c.energyLevel, 0) / checkins.length
+        : null,
+
     // Alertas
     consecutiveSkips: await countConsecutiveSkips(userId, date),
-    highPainDays: checkins.filter(c => c.painLevel >= 7).length,
-    
+    highPainDays: checkins.filter((c) => c.painLevel >= 7).length,
+
     createdAt: new Date().toISOString(),
   };
-  
+
   await db.dailyAggregates.insert(aggregate);
 }
 ```
@@ -1862,46 +1904,46 @@ async function computeDailyAggregates(userId: string, date: string) {
 ```typescript
 async function handleDashboard(input: DashboardInput): Promise<DashboardData> {
   const { userId, period, view } = input;
-  
+
   // Calcular rango de fechas
   const endDate = new Date();
   const startDate = new Date();
   if (period === 'week') startDate.setDate(endDate.getDate() - 7);
   else if (period === 'month') startDate.setMonth(endDate.getMonth() - 1);
   else startDate.setMonth(endDate.getMonth() - 3);
-  
+
   // Obtener agregados
   const aggregates = await db.dailyAggregates.find({
     userId,
     date: { $gte: startDate, $lte: endDate },
   });
-  
+
   // Calcular métricas
   const metrics = {
     userName: (await db.users.findById(userId)).name,
     currentWeek: calculateWeekNumber(userId, endDate),
-    
+
     // Adherencia
     adherence: Math.round(
-      (aggregates.reduce((sum, a) => sum + a.adherenceRate, 0) / aggregates.length)
+      aggregates.reduce((sum, a) => sum + a.adherenceRate, 0) / aggregates.length
     ),
     adherenceChange: calculateChange(aggregates, 'adherenceRate', period),
-    
+
     // Progresión
     strengthProgress: await calculateStrengthProgress(userId, period),
     balanceScore: await getLatestBalanceScore(userId),
     balanceImprovement: calculateChange(aggregates, 'balanceScore', period),
-    
+
     // Volumen semanal
     weeklyVolume: await getWeeklyVolume(userId, period),
-    
+
     // Alertas
     alerts: await generateAlerts(userId, aggregates),
   };
-  
+
   // Caché del resultado (5 minutos)
   await cache.set(`dashboard:${userId}:${period}`, metrics, 300);
-  
+
   return metrics;
 }
 ```
@@ -1915,13 +1957,13 @@ function DashboardWidget() {
     period: 'month',
     view: 'home',
   });
-  
+
   // Cuando el usuario cambia el periodo, actualizar estado
   // ChatGPT detectará el cambio y volverá a invocar el tool
   const handlePeriodChange = (newPeriod: string) => {
     setState({ ...state, period: newPeriod });
   };
-  
+
   return (
     <div>
       {/* Selector de periodo */}
@@ -1940,7 +1982,7 @@ function DashboardWidget() {
           </button>
         ))}
       </div>
-      
+
       {/* Contenido del dashboard */}
       <DashboardHome metrics={props.metrics} />
     </div>
@@ -1965,7 +2007,7 @@ async function getCachedOrCompute<T>(
   if (cached) {
     return JSON.parse(cached);
   }
-  
+
   // Computar y cachear
   const result = await computeFn();
   await redis.setex(key, ttlSeconds, JSON.stringify(result));
@@ -1990,17 +2032,17 @@ async function validateRequest(req: Request): Promise<User | null> {
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     throw new Error('Unauthorized: Missing token');
   }
-  
+
   const token = authHeader.substring(7);
-  
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET) as { sub: string };
     const user = await db.users.findById(decoded.sub);
-    
+
     if (!user) {
       throw new Error('User not found');
     }
-    
+
     return user;
   } catch (error) {
     console.error('Token validation failed:', error);
@@ -2011,12 +2053,12 @@ async function validateRequest(req: Request): Promise<User | null> {
 // En el handler de dashboard
 async function handleDashboard(input: DashboardInput, req: Request) {
   const user = await validateRequest(req);
-  
+
   // Verificar que el userId del input coincide con el usuario autenticado
   if (input.userId !== user.id) {
     throw new Error('Forbidden: Cannot access other user data');
   }
-  
+
   // Proceder con la lógica del dashboard...
 }
 ```
@@ -2032,23 +2074,23 @@ const logger = pino({
 async function handleDashboard(input: DashboardInput, req: Request) {
   const startTime = Date.now();
   const user = await validateRequest(req);
-  
+
   logger.info({
     event: 'dashboard_invoked',
     userId: user.id,
     period: input.period,
     view: input.view,
   });
-  
+
   try {
     const result = await computeDashboard(input);
-    
+
     logger.info({
       event: 'dashboard_success',
       userId: user.id,
       duration: Date.now() - startTime,
     });
-    
+
     return result;
   } catch (error) {
     logger.error({
@@ -2057,7 +2099,7 @@ async function handleDashboard(input: DashboardInput, req: Request) {
       error: error.message,
       duration: Date.now() - startTime,
     });
-    
+
     throw error;
   }
 }
@@ -2079,20 +2121,20 @@ const BuildPlanInputSchema = z.object({
 async function handleBuildPlan(input: unknown) {
   // 1. Validar input
   const validated = BuildPlanInputSchema.parse(input);
-  
+
   // 2. Obtener perfil del usuario
   const profile = await db.profiles.findById(validated.profileId);
   if (!profile) {
     throw new Error('Profile not found');
   }
-  
+
   // 3. Generar plan basándose en perfil y semana
   const plan = await generateWeeklyPlan({
     profile,
     weekNumber: validated.weekNumber,
     focusAreas: validated.focusAreas || ['strength', 'balance', 'mobility'],
   });
-  
+
   // 4. Guardar plan en DB
   await db.plans.insert({
     userId: profile.userId,
@@ -2100,7 +2142,7 @@ async function handleBuildPlan(input: unknown) {
     ...plan,
     createdAt: new Date().toISOString(),
   });
-  
+
   // 5. Retornar respuesta MCP con widget
   return {
     content: [
@@ -2131,25 +2173,25 @@ async function generateWeeklyPlan(params: {
   focusAreas: string[];
 }): Promise<WeeklyPlan> {
   const { profile, weekNumber, focusAreas } = params;
-  
+
   // Ajustar volumen según el riesgo
   const baseVolume = {
     low: { sessions: 3, duration: 30 },
     medium: { sessions: 2, duration: 20 },
     high: { sessions: 2, duration: 15 },
   }[profile.riskLevel];
-  
+
   // Progresión semanal (5-10% por semana)
   const progressionFactor = 1 + (weekNumber - 1) * 0.07;
   const volume = {
     sessions: baseVolume.sessions,
     duration: Math.round(baseVolume.duration * Math.min(progressionFactor, 1.5)),
   };
-  
+
   // Generar sesiones
   const sessions = [];
   const days = ['Monday', 'Wednesday', 'Friday'].slice(0, volume.sessions);
-  
+
   for (const day of days) {
     const session = await createSession({
       day,
@@ -2160,7 +2202,7 @@ async function generateWeeklyPlan(params: {
     });
     sessions.push(session);
   }
-  
+
   return {
     weekNumber,
     sessions,
@@ -2176,16 +2218,16 @@ async function createSession(params: {
   weekNumber: number;
 }): Promise<Session> {
   const { day, duration, focusAreas, riskLevel, weekNumber } = params;
-  
+
   // Seleccionar ejercicios de la biblioteca
   const exercisePool = await db.exercises.find({
     categories: { $in: focusAreas },
     riskLevel: { $lte: riskLevel }, // Ejercicios apropiados para el nivel de riesgo
   });
-  
+
   // Filtrar por progresión (aumentar dificultad gradualmente)
   const exercises = selectExercisesForWeek(exercisePool, weekNumber, duration);
-  
+
   return {
     day,
     type: focusAreas.join(' + '),
@@ -2209,13 +2251,13 @@ function AtlasDashboard() {
     selectedPeriod: 'month',
     selectedView: 'home',
   });
-  
+
   const metrics = props?.metrics || {};
-  
+
   const handlePeriodChange = (period: string) => {
     setState({ ...state, selectedPeriod: period });
   };
-  
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-6">
       {/* Header */}
@@ -2227,7 +2269,7 @@ function AtlasDashboard() {
           Track your progress and stay motivated! 🚀
         </p>
       </header>
-      
+
       {/* Period Selector */}
       <div className="flex gap-3 mb-8">
         {['week', 'month', 'quarter'].map((period) => (
@@ -2246,7 +2288,7 @@ function AtlasDashboard() {
           </button>
         ))}
       </div>
-      
+
       {/* KPI Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <MetricCard
@@ -2257,7 +2299,7 @@ function AtlasDashboard() {
           color="green"
           trend={metrics.adherenceChange >= 0 ? 'up' : 'down'}
         />
-        
+
         <MetricCard
           icon="💪"
           title="Strength Gain"
@@ -2266,7 +2308,7 @@ function AtlasDashboard() {
           color="blue"
           trend="up"
         />
-        
+
         <MetricCard
           icon="⚖️"
           title="Balance Score"
@@ -2276,7 +2318,7 @@ function AtlasDashboard() {
           trend={metrics.balanceImprovement >= 0 ? 'up' : 'down'}
         />
       </div>
-      
+
       {/* Activity Chart */}
       <div className="bg-white rounded-2xl p-8 shadow-xl mb-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">
@@ -2290,7 +2332,7 @@ function AtlasDashboard() {
           height={300}
         />
       </div>
-      
+
       {/* Alerts Section */}
       {metrics.alerts && metrics.alerts.length > 0 && (
         <div className="bg-yellow-50 border-l-4 border-yellow-400 rounded-lg p-6 mb-8">
@@ -2314,7 +2356,7 @@ function AtlasDashboard() {
           </div>
         </div>
       )}
-      
+
       {/* Progress Highlights */}
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-8 text-white">
         <h2 className="text-3xl font-bold mb-4">🎉 Milestones Achieved</h2>
@@ -2343,10 +2385,10 @@ function MetricCard({ icon, title, value, subtitle, color, trend }) {
     blue: 'bg-blue-50 border-blue-200 text-blue-800',
     purple: 'bg-purple-50 border-purple-200 text-purple-800',
   };
-  
+
   const trendIcon = trend === 'up' ? '↑' : '↓';
   const trendColor = trend === 'up' ? 'text-green-600' : 'text-red-600';
-  
+
   return (
     <div className={`rounded-2xl p-6 border-2 ${colorClasses[color]} shadow-lg`}>
       <div className="flex items-center justify-between mb-4">
@@ -2383,10 +2425,10 @@ function DisclaimerBanner() {
   return (
     <div className="bg-gray-100 border-l-4 border-gray-400 p-4 mb-6">
       <p className="text-sm text-gray-700">
-        <strong>Nota:</strong> Esta app no proporciona diagnóstico médico ni tratamiento. 
-        La información presentada es solo para fines educativos. Si experimentas dolor 
-        inusual, mareos, o cualquier síntoma preocupante, detén el ejercicio y consulta 
-        con un profesional de la salud.
+        <strong>Nota:</strong> Esta app no proporciona diagnóstico médico ni tratamiento. La
+        información presentada es solo para fines educativos. Si experimentas dolor inusual, mareos,
+        o cualquier síntoma preocupante, detén el ejercicio y consulta con un profesional de la
+        salud.
       </p>
     </div>
   );
@@ -2401,54 +2443,55 @@ function DisclaimerBanner() {
 const MEDICAL_REFERRAL_TRIGGERS = [
   {
     condition: (input) => input.recent_falls && input.age >= 75,
-    message: "Múltiples caídas recientes en adulto mayor requieren evaluación médica.",
-    action: "RECOMMEND_MEDICAL_CONSULT",
-    urgency: "HIGH",
+    message: 'Múltiples caídas recientes en adulto mayor requieren evaluación médica.',
+    action: 'RECOMMEND_MEDICAL_CONSULT',
+    urgency: 'HIGH',
   },
   {
     condition: (input) => input.chronic_pain?.severity >= 8,
-    message: "Dolor severo (8-10/10) puede indicar lesión o condición subyacente.",
-    action: "RECOMMEND_MEDICAL_CONSULT",
-    urgency: "HIGH",
+    message: 'Dolor severo (8-10/10) puede indicar lesión o condición subyacente.',
+    action: 'RECOMMEND_MEDICAL_CONSULT',
+    urgency: 'HIGH',
   },
   {
     condition: (input) => input.chest_pain_during_exercise,
-    message: "Dolor torácico durante ejercicio requiere atención médica inmediata.",
-    action: "STOP_PROGRAM",
-    urgency: "CRITICAL",
+    message: 'Dolor torácico durante ejercicio requiere atención médica inmediata.',
+    action: 'STOP_PROGRAM',
+    urgency: 'CRITICAL',
   },
   {
-    condition: (input) => input.dizziness_frequency === "frequent",
-    message: "Mareos frecuentes deben ser evaluados por un médico.",
-    action: "RECOMMEND_MEDICAL_CONSULT",
-    urgency: "MEDIUM",
+    condition: (input) => input.dizziness_frequency === 'frequent',
+    message: 'Mareos frecuentes deben ser evaluados por un médico.',
+    action: 'RECOMMEND_MEDICAL_CONSULT',
+    urgency: 'MEDIUM',
   },
 ];
 
 async function evaluateMedicalReferral(input: IntakeInput): Promise<Alert[]> {
   const alerts = [];
-  
+
   for (const trigger of MEDICAL_REFERRAL_TRIGGERS) {
     if (trigger.condition(input)) {
       alerts.push({
-        type: "MEDICAL_REFERRAL",
+        type: 'MEDICAL_REFERRAL',
         severity: trigger.urgency,
         message: trigger.message,
-        recommendation: trigger.urgency === "CRITICAL"
-          ? "Busca atención médica inmediata. No inicies este programa sin autorización médica."
-          : "Consulta con tu médico antes de continuar.",
+        recommendation:
+          trigger.urgency === 'CRITICAL'
+            ? 'Busca atención médica inmediata. No inicies este programa sin autorización médica.'
+            : 'Consulta con tu médico antes de continuar.',
       });
-      
+
       // Logging para auditoría
       logger.warn({
-        event: "medical_referral_triggered",
+        event: 'medical_referral_triggered',
         userId: input.userId,
         trigger: trigger.message,
         urgency: trigger.urgency,
       });
     }
   }
-  
+
   return alerts;
 }
 ```
@@ -2466,12 +2509,12 @@ const KEY = Buffer.from(process.env.ENCRYPTION_KEY, 'hex'); // 32 bytes
 function encrypt(text: string): { encrypted: string; iv: string; tag: string } {
   const iv = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv(ALGORITHM, KEY, iv);
-  
+
   let encrypted = cipher.update(text, 'utf8', 'hex');
   encrypted += cipher.final('hex');
-  
+
   const tag = cipher.getAuthTag();
-  
+
   return {
     encrypted,
     iv: iv.toString('hex'),
@@ -2480,16 +2523,12 @@ function encrypt(text: string): { encrypted: string; iv: string; tag: string } {
 }
 
 function decrypt(encrypted: string, iv: string, tag: string): string {
-  const decipher = crypto.createDecipheriv(
-    ALGORITHM,
-    KEY,
-    Buffer.from(iv, 'hex')
-  );
+  const decipher = crypto.createDecipheriv(ALGORITHM, KEY, Buffer.from(iv, 'hex'));
   decipher.setAuthTag(Buffer.from(tag, 'hex'));
-  
+
   let decrypted = decipher.update(encrypted, 'hex', 'utf8');
   decrypted += decipher.final('utf8');
-  
+
   return decrypted;
 }
 
@@ -2497,7 +2536,7 @@ function decrypt(encrypted: string, iv: string, tag: string): string {
 async function saveHealthData(userId: string, data: HealthData) {
   const serialized = JSON.stringify(data);
   const { encrypted, iv, tag } = encrypt(serialized);
-  
+
   await db.healthRecords.insert({
     userId,
     encrypted,
@@ -2539,7 +2578,7 @@ async function logAuditEvent(event: {
     ...event,
     timestamp: new Date().toISOString(),
   });
-  
+
   // También loguear en servicio externo (ej: AWS CloudWatch)
   logger.info({
     audit: true,
@@ -2569,7 +2608,6 @@ await logAuditEvent({
   - [ ] Inicializar repositorio Git
   - [ ] Configurar TypeScript/JavaScript
   - [ ] Setup ESLint + Prettier
-  
 - [ ] **Instalar dependencias**
   - [ ] `@modelcontextprotocol/sdk` (servidor MCP)
   - [ ] `react` + `react-dom` (widgets)
@@ -2583,13 +2621,11 @@ await logAuditEvent({
   - [ ] Implementar endpoint `/mcp`
   - [ ] Configurar transporte (HTTP/SSE)
   - [ ] Añadir middleware CORS
-  
 - [ ] **Definir tools**
   - [ ] Escribir JSON Schemas para inputs
   - [ ] Implementar handlers
   - [ ] Añadir metadatos `_meta` para widgets
   - [ ] Testing de tools con MCP Inspector
-  
 - [ ] **Database**
   - [ ] Diseñar schema (users, profiles, sessions, etc.)
   - [ ] Implementar migrations
@@ -2601,13 +2637,11 @@ await logAuditEvent({
   - [ ] Configurar `vite.config.ts` con múltiples entry points
   - [ ] Configurar Tailwind CSS
   - [ ] Script de build para generar bundles
-  
 - [ ] **Desarrollar widgets**
   - [ ] Crear hooks (`useWidgetState`, `useWidgetProps`)
   - [ ] Implementar componentes React
   - [ ] Estilos con Tailwind
   - [ ] Testing local con `pnpm run dev`
-  
 - [ ] **Hosting de assets**
   - [ ] Elegir CDN (Vercel, Cloudflare, AWS S3)
   - [ ] Configurar CORS
@@ -2621,7 +2655,6 @@ await logAuditEvent({
   - [ ] Implementar `/oauth/token` endpoint
   - [ ] Validación de PKCE
   - [ ] Generación de JWT tokens
-  
 - [ ] **Integrar con MCP**
   - [ ] Añadir `securitySchemes` en server config
   - [ ] Middleware de validación de tokens
@@ -2634,7 +2667,6 @@ await logAuditEvent({
   - [ ] Configurar ngrok (o deployment temporal)
   - [ ] Registrar connector
   - [ ] Testing end-to-end
-  
 - [ ] **Testing automatizado**
   - [ ] Unit tests para handlers
   - [ ] Integration tests para tools
@@ -2647,12 +2679,10 @@ await logAuditEvent({
   - [ ] Configurar variables de entorno
   - [ ] Setup monitoring (Sentry, Datadog)
   - [ ] Health checks
-  
 - [ ] **Frontend (CDN)**
   - [ ] Deploy de bundles
   - [ ] Configurar cache invalidation
   - [ ] Testing de assets en producción
-  
 - [ ] **Database**
   - [ ] Elegir managed DB (PostgreSQL en Render, MongoDB Atlas)
   - [ ] Backups automáticos
@@ -2665,12 +2695,10 @@ await logAuditEvent({
   - [ ] API documentation
   - [ ] Privacy policy
   - [ ] Terms of service
-  
 - [ ] **Verificación**
   - [ ] Cuenta OpenAI verificada
   - [ ] Dominio verificado (OAuth)
   - [ ] Compliance con políticas
-  
 - [ ] **Postular**
   - [ ] Completar formulario de postulación
   - [ ] Testing con equipo de OpenAI
@@ -2725,7 +2753,7 @@ El OpenAI Apps SDK representa una **oportunidad única** de llevar servicios esp
 ✅ **Interfaz conversacional natural** que reduce barreras tecnológicas  
 ✅ **Widgets adaptados** con tipografía grande, contraste alto, y diseño simple  
 ✅ **Monitoreo continuo** de salud y progreso con dashboards interactivos  
-✅ **Seguridad y compliance** con cifrado, OAuth, disclaimers y derivación médica apropiada  
+✅ **Seguridad y compliance** con cifrado, OAuth, disclaimers y derivación médica apropiada
 
 Este documento ha cubierto desde los fundamentos del SDK hasta la implementación específica de ATLAS. Usa esta guía como referencia durante todo el ciclo de desarrollo y manteniéndola actualizada conforme el SDK evoluciona.
 

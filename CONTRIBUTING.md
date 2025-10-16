@@ -109,6 +109,7 @@ ngrok http 3000
 ### Workflow
 
 1. **Crea tu branch** desde `develop`:
+
    ```bash
    git checkout develop
    git pull upstream develop
@@ -118,12 +119,14 @@ ngrok http 3000
 2. **Desarrolla** tu feature con commits frecuentes
 
 3. **Mantén tu rama actualizada**:
+
    ```bash
    git fetch upstream
    git rebase upstream/develop
    ```
 
 4. **Push** a tu fork:
+
    ```bash
    git push origin feature/nombre-descriptivo
    ```
@@ -141,6 +144,7 @@ Para más detalles, consulta [GITFLOW.md](./GITFLOW.md).
 Formato: `tipo(scope): descripción`
 
 **Tipos:**
+
 - `feat`: Nueva funcionalidad
 - `fix`: Corrección de bug
 - `docs`: Cambios en documentación
@@ -151,6 +155,7 @@ Formato: `tipo(scope): descripción`
 - `perf`: Mejoras de performance
 
 **Ejemplos:**
+
 ```
 feat(dashboard): add weekly adherence metric widget
 fix(mcp): correct CORS headers for widget assets
@@ -259,6 +264,7 @@ Siempre prueba manualmente en ChatGPT Developer Mode antes de abrir PR:
 ### Actualizar Docs
 
 Si tu cambio afecta:
+
 - **Funcionalidad**: Actualiza README.md y docs en `Refs/`
 - **API/Tools**: Actualiza `OpenAI_Apps_SDK_Reference.md`
 - **Workflow**: Actualiza `GITFLOW.md` o `CONTRIBUTING.md`
@@ -272,15 +278,12 @@ Si tu cambio afecta:
 ```typescript
 /**
  * Calculates weekly adherence percentage for a user.
- * 
+ *
  * @param userId - The user's unique identifier
  * @param weekNumber - Week number (1-52)
  * @returns Adherence percentage (0-100)
  */
-export async function calculateAdherence(
-  userId: string,
-  weekNumber: number
-): Promise<number> {
+export async function calculateAdherence(userId: string, weekNumber: number): Promise<number> {
   // Logic here
 }
 ```
@@ -290,6 +293,7 @@ export async function calculateAdherence(
 ## Preguntas
 
 Si tienes dudas:
+
 - Abre un [Discussion](https://github.com/aldoolivas/atlas_app_chatgpt/discussions)
 - Contacta al maintainer: [@aldoolivas](https://github.com/aldoolivas)
 

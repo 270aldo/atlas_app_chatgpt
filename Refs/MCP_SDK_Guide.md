@@ -1,7 +1,7 @@
 # Model Context Protocol (MCP) - Guía Completa
 
 > **Nota:** Esta documentación está optimizada para ser usada como contexto por agentes de IA durante el desarrollo del proyecto ATLAS.
-> 
+>
 > **Última actualización:** 14 de Octubre, 2025
 
 ---
@@ -29,6 +29,7 @@
 **Model Context Protocol (MCP)** es un protocolo **open-source** creado para estandarizar la forma en que los Large Language Models (LLMs) interactúan con herramientas externas, datos y servicios.
 
 **Características clave:**
+
 - 🌐 **Transport-agnostic**: Funciona sobre HTTP, SSE, WebSockets
 - 📋 **Contratos claros**: JSON Schema para inputs/outputs
 - 🔧 **Extensible**: Fácil añadir nuevas capabilities
@@ -37,6 +38,7 @@
 ### Por qué MCP importa para Apps SDK
 
 El **OpenAI Apps SDK** está construido sobre MCP. Esto significa:
+
 - ✅ Tu servidor MCP funciona automáticamente en ChatGPT
 - ✅ Puedes reutilizar el mismo servidor para otros clientes MCP
 - ✅ El protocolo evoluciona de forma abierta (no vendor lock-in)
@@ -71,6 +73,7 @@ El **OpenAI Apps SDK** está construido sobre MCP. Esto significa:
 ### Conceptos Fundamentales
 
 **Tools**: Funciones que el LLM puede invocar
+
 ```typescript
 {
   name: "get_weather",
@@ -81,6 +84,7 @@ El **OpenAI Apps SDK** está construido sobre MCP. Esto significa:
 ```
 
 **Resources**: Datos o contenido que el LLM puede consultar
+
 ```typescript
 {
   uri: "file:///data/users.json",
@@ -90,6 +94,7 @@ El **OpenAI Apps SDK** está construido sobre MCP. Esto significa:
 ```
 
 **Prompts**: Templates pre-configurados
+
 ```typescript
 {
   name: "summarize_document",
@@ -196,6 +201,7 @@ MCP define varias **capabilities** que un servidor puede implementar:
 Permite al LLM invocar funciones.
 
 **Request: list_tools**
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -205,6 +211,7 @@ Permite al LLM invocar funciones.
 ```
 
 **Response:**
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -229,6 +236,7 @@ Permite al LLM invocar funciones.
 ```
 
 **Request: call_tool**
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -249,6 +257,7 @@ Permite al LLM invocar funciones.
 Expone datos que el LLM puede leer.
 
 **Request: resources/list**
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -258,6 +267,7 @@ Expone datos que el LLM puede leer.
 ```
 
 **Response:**
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -311,8 +321,8 @@ const server = new Server(
   },
   {
     capabilities: {
-      tools: {},      // Habilitar tools
-      resources: {},  // Habilitar resources (opcional)
+      tools: {}, // Habilitar tools
+      resources: {}, // Habilitar resources (opcional)
     },
   }
 );
@@ -334,11 +344,15 @@ import { z } from 'zod';
 // Definir schema de validación
 const CreateWorkoutSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  exercises: z.array(z.object({
-    name: z.string(),
-    sets: z.number().int().positive(),
-    reps: z.number().int().positive(),
-  })).min(1),
+  exercises: z
+    .array(
+      z.object({
+        name: z.string(),
+        sets: z.number().int().positive(),
+        reps: z.number().int().positive(),
+      })
+    )
+    .min(1),
 });
 
 // Listar tools disponibles
@@ -425,7 +439,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
 **Resource estático:**
 
 ```typescript
-import { ListResourcesRequestSchema, ReadResourceRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import {
+  ListResourcesRequestSchema,
+  ReadResourceRequestSchema,
+} from '@modelcontextprotocol/sdk/types.js';
 
 const resources = [
   {
@@ -445,7 +462,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
 
   if (uri === 'atlas://exercises/library') {
     const exercises = await db.exercises.findAll();
-    
+
     return {
       contents: [
         {
@@ -481,13 +498,13 @@ server.setRequestHandler(ListResourceTemplatesRequestSchema, async () => ({
 
 server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   const { uri } = request.params;
-  
+
   // Parsear URI template
   const match = uri.match(/^atlas:\/\/workouts\/(.+)$/);
   if (match) {
     const date = match[1];
     const workout = await db.workouts.findByDate(date);
-    
+
     return {
       contents: [
         {
@@ -569,16 +586,18 @@ app.post('/mcp', async (req, res) => {
 ```typescript
 import cors from 'cors';
 
-app.use(cors({
-  origin: [
-    'https://chatgpt.com',
-    'https://chat.openai.com',
-    'http://localhost:*', // Para desarrollo
-  ],
-  credentials: true,
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+app.use(
+  cors({
+    origin: [
+      'https://chatgpt.com',
+      'https://chat.openai.com',
+      'http://localhost:*', // Para desarrollo
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 ```
 
 ---
@@ -589,14 +608,14 @@ Los metadatos en `_meta` son **cruciales** para que ChatGPT sepa cómo renderiza
 
 ### Metadatos Disponibles
 
-| Metadato | Tipo | Descripción | Ejemplo |
-|----------|------|-------------|---------|
-| `openai/outputTemplate` | string | URI del widget HTML a renderizar | `"ui://widget/dashboard.html"` |
-| `openai/widgetAccessible` | boolean | Indica si el resultado puede ser widget | `true` |
-| `openai/resultCanProduceWidget` | boolean | El tool puede retornar un widget | `true` |
-| `openai/toolInvocation/invoking` | string | Mensaje mientras ejecuta (loading) | `"Creating your plan..."` |
-| `openai/toolInvocation/invoked` | string | Mensaje al terminar | `"Plan created!"` |
-| `openai/readOnlyHint` | boolean | Indica si es solo lectura (no modifica datos) | `true` |
+| Metadato                         | Tipo    | Descripción                                   | Ejemplo                        |
+| -------------------------------- | ------- | --------------------------------------------- | ------------------------------ |
+| `openai/outputTemplate`          | string  | URI del widget HTML a renderizar              | `"ui://widget/dashboard.html"` |
+| `openai/widgetAccessible`        | boolean | Indica si el resultado puede ser widget       | `true`                         |
+| `openai/resultCanProduceWidget`  | boolean | El tool puede retornar un widget              | `true`                         |
+| `openai/toolInvocation/invoking` | string  | Mensaje mientras ejecuta (loading)            | `"Creating your plan..."`      |
+| `openai/toolInvocation/invoked`  | string  | Mensaje al terminar                           | `"Plan created!"`              |
+| `openai/readOnlyHint`            | boolean | Indica si es solo lectura (no modifica datos) | `true`                         |
 
 ### Uso en Tools
 
@@ -605,19 +624,21 @@ const tools: Tool[] = [
   {
     name: 'atlas_build_plan',
     description: 'Generate weekly workout plan',
-    inputSchema: { /* ... */ },
+    inputSchema: {
+      /* ... */
+    },
     _meta: {
       // Widget que se renderizará
       'openai/outputTemplate': 'ui://widget/atlas-weekly-board.html',
-      
+
       // Habilitar rendering como widget
       'openai/widgetAccessible': true,
       'openai/resultCanProduceWidget': true,
-      
+
       // Mensajes de feedback
       'openai/toolInvocation/invoking': 'Building your personalized plan...',
       'openai/toolInvocation/invoked': 'Your plan is ready!',
-      
+
       // Metadato de solo lectura (opcional)
       'openai/readOnlyHint': false, // Este tool crea datos
     },
@@ -625,13 +646,15 @@ const tools: Tool[] = [
   {
     name: 'atlas_view_progress',
     description: 'View your fitness progress',
-    inputSchema: { /* ... */ },
+    inputSchema: {
+      /* ... */
+    },
     _meta: {
       'openai/outputTemplate': 'ui://widget/atlas-dashboard.html',
       'openai/widgetAccessible': true,
       'openai/resultCanProduceWidget': true,
       'openai/toolInvocation/invoking': 'Loading your stats...',
-      'openai/toolInvocation/invoked': 'Here\'s your progress!',
+      'openai/toolInvocation/invoked': "Here's your progress!",
       'openai/readOnlyHint': true, // Solo lectura
     },
   },
@@ -660,7 +683,7 @@ const resources: Resource[] = [
 ```typescript
 async function handleToolCall(name: string, args: any) {
   // ... lógica del tool
-  
+
   return {
     content: [
       // Texto plano (opcional, para contexto del LLM)
@@ -862,7 +885,7 @@ app.use(express.json());
 app.post('/mcp', async (req, res) => {
   const transport = new SSEServerTransport('/mcp', res);
   res.on('close', () => transport.close());
-  
+
   await server.connect(transport);
   await transport.handleRequest(req, res, req.body);
 });
@@ -925,7 +948,7 @@ async def create_workout(workout: WorkoutInput):
         "exercises": workout.exercises,
         "created_at": "2025-10-14T22:00:00Z",
     }
-    
+
     # Retornar respuesta MCP
     return {
         "content": [
@@ -953,14 +976,14 @@ async def create_workout(workout: WorkoutInput):
 
 ### Diferencias TypeScript vs Python
 
-| Aspecto | TypeScript | Python |
-|---------|------------|--------|
-| **SDK** | `@modelcontextprotocol/sdk` | `fastmcp` |
-| **Validación** | Zod | Pydantic |
-| **Async** | `async/await` nativo | `async/await` nativo |
-| **Type Safety** | Tipos estáticos | Type hints (runtime con Pydantic) |
-| **Transporte** | SSEServerTransport manual | FastMCP automático |
-| **Madurez** | Más maduro | Más reciente |
+| Aspecto         | TypeScript                  | Python                            |
+| --------------- | --------------------------- | --------------------------------- |
+| **SDK**         | `@modelcontextprotocol/sdk` | `fastmcp`                         |
+| **Validación**  | Zod                         | Pydantic                          |
+| **Async**       | `async/await` nativo        | `async/await` nativo              |
+| **Type Safety** | Tipos estáticos             | Type hints (runtime con Pydantic) |
+| **Transporte**  | SSEServerTransport manual   | FastMCP automático                |
+| **Madurez**     | Más maduro                  | Más reciente                      |
 
 ---
 
@@ -981,32 +1004,32 @@ const inputSchema = {
       maxLength: 100,
       description: 'User name',
     },
-    
+
     // Email
     email: {
       type: 'string',
       format: 'email',
     },
-    
+
     // Fecha
     date: {
       type: 'string',
       format: 'date', // YYYY-MM-DD
     },
-    
+
     // Enum
     status: {
       type: 'string',
       enum: ['active', 'inactive', 'pending'],
     },
-    
+
     // Número con constraints
     age: {
       type: 'number',
       minimum: 0,
       maximum: 150,
     },
-    
+
     // Array de objetos
     exercises: {
       type: 'array',
@@ -1022,7 +1045,7 @@ const inputSchema = {
       minItems: 1,
       maxItems: 20,
     },
-    
+
     // Nested object
     address: {
       type: 'object',
@@ -1046,14 +1069,17 @@ import { z } from 'zod';
 
 const WorkoutSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be YYYY-MM-DD'),
-  exercises: z.array(
-    z.object({
-      name: z.string().min(1).max(100),
-      sets: z.number().int().min(1).max(10),
-      reps: z.number().int().min(1).max(100),
-      weight: z.number().min(0).optional(),
-    })
-  ).min(1).max(20),
+  exercises: z
+    .array(
+      z.object({
+        name: z.string().min(1).max(100),
+        sets: z.number().int().min(1).max(10),
+        reps: z.number().int().min(1).max(100),
+        weight: z.number().min(0).optional(),
+      })
+    )
+    .min(1)
+    .max(20),
   notes: z.string().max(500).optional(),
   difficulty: z.enum(['easy', 'medium', 'hard']).optional(),
 });
@@ -1069,7 +1095,7 @@ async function handleCreateWorkout(args: unknown) {
     if (error instanceof z.ZodError) {
       return {
         error: 'Validation failed',
-        details: error.errors.map(e => ({
+        details: error.errors.map((e) => ({
           path: e.path.join('.'),
           message: e.message,
         })),
@@ -1103,7 +1129,7 @@ class WorkoutInput(BaseModel):
     exercises: list[Exercise] = Field(..., min_length=1, max_length=20)
     notes: Optional[str] = Field(None, max_length=500)
     difficulty: Optional[Difficulty] = None
-    
+
     @validator('date')
     def validate_date(cls, v):
         from datetime import datetime
@@ -1128,6 +1154,7 @@ async def create_workout(workout: WorkoutInput):
 ### 1. Validación Exhaustiva
 
 ✅ **Siempre valida inputs:**
+
 ```typescript
 // Malo
 async function handleTool(args: any) {
@@ -1150,10 +1177,10 @@ async function handleToolCall(name: string, args: unknown) {
   try {
     // Validación
     const validated = schema.parse(args);
-    
+
     // Lógica
     const result = await performAction(validated);
-    
+
     // Respuesta exitosa
     return {
       content: [{ type: 'text', text: 'Success' }],
@@ -1161,23 +1188,27 @@ async function handleToolCall(name: string, args: unknown) {
   } catch (error) {
     // Log error
     logger.error('Tool call failed', { name, error });
-    
+
     // Retornar error amigable
     if (error instanceof z.ZodError) {
       return {
-        content: [{
-          type: 'text',
-          text: `Validation error: ${error.errors[0].message}`,
-        }],
+        content: [
+          {
+            type: 'text',
+            text: `Validation error: ${error.errors[0].message}`,
+          },
+        ],
         isError: true,
       };
     }
-    
+
     return {
-      content: [{
-        type: 'text',
-        text: 'An unexpected error occurred. Please try again.',
-      }],
+      content: [
+        {
+          type: 'text',
+          text: 'An unexpected error occurred. Please try again.',
+        },
+      ],
       isError: true,
     };
   }
@@ -1200,18 +1231,18 @@ const logger = pino({
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const startTime = Date.now();
   const { name, arguments: args } = request.params;
-  
+
   logger.info({ event: 'tool_called', tool: name, args });
-  
+
   try {
     const result = await handleTool(name, args);
-    
+
     logger.info({
       event: 'tool_success',
       tool: name,
       duration: Date.now() - startTime,
     });
-    
+
     return result;
   } catch (error) {
     logger.error({
@@ -1231,27 +1262,24 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
   return Promise.race([
     promise,
-    new Promise<T>((_, reject) =>
-      setTimeout(() => reject(new Error('Timeout')), ms)
-    ),
+    new Promise<T>((_, reject) => setTimeout(() => reject(new Error('Timeout')), ms)),
   ]);
 }
 
 async function handleTool(args: any) {
   try {
     // Timeout de 25 segundos (ChatGPT tiene timeout de 30s)
-    const result = await withTimeout(
-      performLongOperation(args),
-      25000
-    );
+    const result = await withTimeout(performLongOperation(args), 25000);
     return result;
   } catch (error) {
     if (error.message === 'Timeout') {
       return {
-        content: [{
-          type: 'text',
-          text: 'Operation took too long. Please try again.',
-        }],
+        content: [
+          {
+            type: 'text',
+            text: 'Operation took too long. Please try again.',
+          },
+        ],
         isError: true,
       };
     }
@@ -1302,7 +1330,7 @@ async function getCachedOrFetch<T>(
   if (cached !== undefined) {
     return cached;
   }
-  
+
   // Fetch y cachear
   const result = await fetchFn();
   cache.set(key, result, ttl);
@@ -1419,22 +1447,26 @@ curl -X POST http://localhost:8000/mcp \
 ### Errores Comunes y Soluciones
 
 **Error 1: "Tool not found"**
+
 ```typescript
 // Problema: Nombre de tool no coincide
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name } = request.params;
-  
-  if (name === 'createWorkout') {  // ❌ Mal: camelCase
+
+  if (name === 'createWorkout') {
+    // ❌ Mal: camelCase
     // ...
   }
-  
-  if (name === 'create_workout') {  // ✅ Bien: snake_case
+
+  if (name === 'create_workout') {
+    // ✅ Bien: snake_case
     // ...
   }
 });
 ```
 
 **Error 2: "Invalid JSON Schema"**
+
 ```typescript
 // Problema: Schema mal formado
 inputSchema: {
@@ -1456,6 +1488,7 @@ inputSchema: {
 ```
 
 **Error 3: "Widget not rendering"**
+
 ```typescript
 // Problema: MIME type incorrecto
 resource: {
@@ -1471,15 +1504,15 @@ resource: {
 ```
 
 **Error 4: "CORS error"**
+
 ```typescript
 // Asegurarse de configurar CORS correctamente
-app.use(cors({
-  origin: [
-    'https://chatgpt.com',
-    'https://chat.openai.com',
-  ],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: ['https://chatgpt.com', 'https://chat.openai.com'],
+    credentials: true,
+  })
+);
 
 // También verificar headers en responses de widgets
 res.setHeader('Access-Control-Allow-Origin', '*');
@@ -1523,7 +1556,7 @@ El Model Context Protocol es la **base técnica** del OpenAI Apps SDK. Dominar M
 ✅ Exponer tools que ChatGPT puede usar naturalmente  
 ✅ Retornar widgets interactivos con datos dinámicos  
 ✅ Reutilizar el mismo servidor para múltiples clientes MCP  
-✅ Aprovechar un ecosistema open-source en crecimiento  
+✅ Aprovechar un ecosistema open-source en crecimiento
 
 Esta guía ha cubierto desde los fundamentos hasta implementaciones avanzadas. Usa este documento como referencia técnica durante el desarrollo de ATLAS y otros proyectos con MCP.
 
