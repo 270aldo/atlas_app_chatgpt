@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { triageCheckin } from '../utils/clinical-guardrails.js';
 
 const SessionCheckinArgs = z.object({
   pain: z.number().min(0).max(10).default(2),
@@ -30,6 +31,7 @@ export const atlasSessionCheckinTool = {
   },
   handler: async (args: unknown) => {
     const parsed = SessionCheckinArgs.parse(args ?? {});
+    const safety = triageCheckin(parsed);
     return {
       content: [
         {
@@ -45,7 +47,7 @@ export const atlasSessionCheckinTool = {
         'openai/outputTemplate': 'atlas://session-checkin/widget',
         'openai/widgetAccessible': true,
       },
-      structuredContent: { defaults: parsed },
+      structuredContent: { defaults: parsed, safety },
     };
   },
 };

@@ -10,6 +10,10 @@ import { atlasDashboardTool } from './tools/atlas-dashboard.js';
 import { atlasSessionCheckinTool } from './tools/atlas-session-checkin.js';
 import { atlasDashboardResource } from './resources/atlas-dashboard-resource.js';
 import { atlasSessionCheckinResource } from './resources/atlas-session-checkin-resource.js';
+import { atlasAdaptivePlanTool } from './tools/atlas-adaptive-plan.js';
+import { atlasWeeklyPlanResource } from './resources/atlas-weekly-plan-resource.js';
+import { applySafetyPolicy } from './middleware/safety-policy.js';
+import { atlasSafetyReviewTool } from './tools/atlas-safety-review.js';
 
 const server = new Server(
   { name: 'atlas-mcp-server', version: '0.1.0' },
@@ -20,23 +24,28 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
   tools: [
     atlasDashboardTool.definition,
     atlasSessionCheckinTool.definition,
+    atlasAdaptivePlanTool.definition,
+    atlasSafetyReviewTool.definition,
   ],
 }));
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  if (request.params.name === 'atlas_dashboard') {
-    return atlasDashboardTool.handler(request.params.arguments);
-  }
-  if (request.params.name === 'atlas_session_checkin') {
-    return atlasSessionCheckinTool.handler(request.params.arguments);
-  }
-  throw new Error(`Unknown tool: ${request.params.name}`);
+  const name = request.params.name;
+  const args = request.params.arguments;
+  return applySafetyPolicy(name, args, async () => {
+    if (name === 'atlas_dashboard') return atlasDashboardTool.handler(args);
+    if (name === 'atlas_session_checkin') return atlasSessionCheckinTool.handler(args);
+    if (name === 'atlas_adaptive_plan') return atlasAdaptivePlanTool.handler(args);
+    if (name === 'atlas_safety_review') return atlasSafetyReviewTool.handler(args);
+    throw new Error(`Unknown tool: ${name}`);
+  });
 });
 
 server.setRequestHandler(ListResourcesRequestSchema, async () => ({
   resources: [
     atlasDashboardResource.definition,
     atlasSessionCheckinResource.definition,
+    atlasWeeklyPlanResource.definition,
   ],
 }));
 
@@ -46,6 +55,9 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   }
   if (request.params.uri === 'atlas://session-checkin/widget') {
     return atlasSessionCheckinResource.handler();
+  }
+  if (request.params.uri === 'atlas://weekly-plan/widget') {
+    return atlasWeeklyPlanResource.handler();
   }
   throw new Error(`Unknown resource: ${request.params.uri}`);
 });

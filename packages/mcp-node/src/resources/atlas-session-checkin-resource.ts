@@ -1,3 +1,5 @@
+import { WIDGET_BASE_URL as BASE_URL } from '../config.js';
+
 export const atlasSessionCheckinResource = {
   definition: {
     uri: 'atlas://session-checkin/widget',
@@ -6,7 +8,9 @@ export const atlasSessionCheckinResource = {
     mimeType: 'text/html+skybridge',
   },
   handler: async () => {
-    const widgetUrl = 'http://localhost:4444/src/entrypoints/atlas-session-checkin.tsx';
+    // En desarrollo: usa Vite dev server (sirve .tsx directamente con HMR)
+    // En producción: apuntaría a /dist/assets/atlas-session-checkin.[hash].js
+    const widgetUrl = `${BASE_URL}/src/entrypoints/atlas-session-checkin.tsx`;
 
     const htmlContent = `
 <!DOCTYPE html>

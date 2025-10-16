@@ -33,20 +33,19 @@ ATLAS ayuda a adultos mayores a mantenerse activos, fuertes y seguros mediante:
 
 ```
 atlas_app_chatgpt/
+├── packages/
+│   ├── mcp-node/              # Servidor MCP (TypeScript, Model Context Protocol)
+│   │   ├── src/tools/         # Tools (atlas_dashboard, atlas_session_checkin, atlas_adaptive_plan, atlas_safety_review)
+│   │   ├── src/resources/     # Recursos Skybridge/HTML para widgets
+│   │   └── src/utils/         # Guardrails clínicos, generación de plan, middleware
+│   └── widgets/               # Widgets React + Vite + Tailwind
+│       ├── src/components/    # Dashboard, Check-in, WeeklyPlan, avisos
+│       └── src/entrypoints/   # Módulos cargados por skybridge
 ├── Refs/                      # Documentación de referencia (Apps SDK, MCP)
-├── mcp/                       # Servidores MCP (Node y Python)
-│   ├── node/
-│   └── python/
-├── widgets/                   # Widgets React (UI embebida en ChatGPT)
-│   └── src/
+├── scripts/                   # Utilidades complementarias
 ├── .github/                   # Templates de issues, PRs, workflows
-├── .gitignore
-├── README.md
-├── CONTRIBUTING.md
-├── CODE_OF_CONDUCT.md
-├── CHANGELOG.md
-├── GITFLOW.md
-└── package.json
+├── README.md, CONTRIBUTING.md, CODE_OF_CONDUCT.md, TESTING.md, etc.
+└── package.json               # Workspace pnpm
 ```
 
 ---
@@ -55,10 +54,10 @@ atlas_app_chatgpt/
 
 ### Prerrequisitos
 
-- **Node.js** 18+ (recomendado 20+)
-- **pnpm** instalado globalmente
-- **Python** 3.10+ (para servidor MCP Python)
-- **ngrok** (para testing local con ChatGPT)
+- **Node.js** 20+
+- **pnpm** 8+
+- **ngrok** (exponer widgets a ChatGPT)
+- **ChatGPT Plus** con Developer Mode habilitado
 
 ### Instalación
 
@@ -78,27 +77,38 @@ cp .env.example .env
 ### Desarrollo
 
 ```bash
-# Levantar servidor de widgets (Vite)
-pnpm dev
+# Servir widgets (Vite, puerto 4444)
+pnpm --filter @atlas/widgets dev
 
-# En otra terminal: servidor MCP (Node)
-cd mcp/node
-pnpm start
-
-# O servidor MCP (Python)
-cd mcp/python
-uvicorn main:app --reload
+# En otra terminal (usa la URL pública generada por ngrok)
+WIDGET_BASE_URL=https://abc123.ngrok.app pnpm --filter @atlas/mcp-node dev
 ```
 
 ### Testing en ChatGPT
 
-1. Activar **Developer Mode** en ChatGPT (Settings → Connectors)
-2. Exponer servidor local con ngrok:
+1. Activar **Developer Mode** en ChatGPT (Settings → Connectors).
+2. Exponer widgets con ngrok:
    ```bash
-   ngrok http 3000
+   ngrok http 4444
    ```
-3. Registrar connector en ChatGPT con URL de ngrok
-4. Probar tools en chat: "Mostrar mi dashboard semanal de ATLAS"
+3. Compilar el MCP (`pnpm --filter @atlas/mcp-node build`) o usar el comando `dev`. Configura el connector stdio con la URL de ngrok:
+   ```json
+   {
+     "atlas": {
+       "command": "node",
+       "args": ["/ruta/abs/atlas_app_chatgpt/packages/mcp-node/dist/index.js"],
+       "env": {
+         "WIDGET_BASE_URL": "https://abc123.ngrok.app"
+       }
+     }
+   }
+   ```
+4. Probar herramientas en el chat:
+   - "Lista los tools disponibles"
+   - "Revisión de seguridad: dolor 8, energía 2, rpe 9, notas 'dolor de pecho'"
+   - "Genera mi plan adaptativo semanal con objetivo equilibrio"
+   - "Abrir check-in de sesión con dolor=3, energía=6, rpe=5"
+   - "Muestra mi dashboard semanal de ATLAS"
 
 ---
 

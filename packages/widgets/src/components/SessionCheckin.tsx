@@ -1,4 +1,8 @@
 import React from 'react';
+import { useWidgetProps } from '../utils/useWidgetProps';
+import { SafetyNotice } from './SafetyNotice';
+import { ConsentBanner } from './ConsentBanner';
+import { markCheckinNow } from './DailyNudge';
 
 interface SessionCheckinProps {
   defaults?: {
@@ -7,9 +11,24 @@ interface SessionCheckinProps {
     rpe?: number; // 1-10
     notes?: string;
   };
+  safety?: {
+    risk?: 'low' | 'moderate' | 'high';
+    recommendations?: string[];
+    disclaimer?: string;
+  };
 }
 
-export const SessionCheckin: React.FC<SessionCheckinProps> = ({ defaults }) => {
+const defaultProps: SessionCheckinProps = {
+  defaults: {
+    pain: 2,
+    energy: 7,
+    rpe: 5,
+    notes: '',
+  },
+};
+
+export const SessionCheckin: React.FC<SessionCheckinProps> = (props) => {
+  const { defaults = defaultProps.defaults, safety } = useWidgetProps<SessionCheckinProps>(props);
   const [pain, setPain] = React.useState<number>(defaults?.pain ?? 2);
   const [energy, setEnergy] = React.useState<number>(defaults?.energy ?? 7);
   const [rpe, setRpe] = React.useState<number>(defaults?.rpe ?? 5);
@@ -18,7 +37,8 @@ export const SessionCheckin: React.FC<SessionCheckinProps> = ({ defaults }) => {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('checkin', { pain, energy, rpe, notes });
-    alert('¡Check-in enviado!');
+    markCheckinNow();
+    alert('¡Check-in enviado! Puedes cerrar el widget.');
   };
 
   return (
@@ -28,6 +48,8 @@ export const SessionCheckin: React.FC<SessionCheckinProps> = ({ defaults }) => {
           <h1 className="text-4xl font-bold text-electric-violet">Check-in de Sesión</h1>
           <p className="text-gray-400 mt-1">Responde para ajustar tu plan de forma segura</p>
         </header>
+        <ConsentBanner />
+        <SafetyNotice risk={safety?.risk} recommendations={safety?.recommendations} disclaimer={safety?.disclaimer} />
 
         <form onSubmit={submit} className="space-y-6" aria-label="Formulario de check-in de sesión">
           <div className="card-premium">

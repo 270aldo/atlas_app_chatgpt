@@ -1,3 +1,5 @@
+import { WIDGET_BASE_URL as BASE_URL } from '../config.js';
+
 export const atlasDashboardResource = {
   definition: {
     uri: 'atlas://dashboard/widget',
@@ -6,7 +8,9 @@ export const atlasDashboardResource = {
     mimeType: 'text/html+skybridge',
   },
   handler: async () => {
-    const widgetUrl = 'http://localhost:4444/src/entrypoints/atlas-dashboard.tsx';
+    // En desarrollo: usa Vite dev server (sirve .tsx directamente con HMR)
+    // En producción: apuntaría a /dist/assets/atlas-dashboard.[hash].js
+    const widgetUrl = `${BASE_URL}/src/entrypoints/atlas-dashboard.tsx`;
 
     const htmlContent = `
 <!DOCTYPE html>
