@@ -1,0 +1,10 @@
+version: "2"
+authtoken: 347bDFAmQS8Gu4pvkDHjtga55M7_3HVo6UhpcABCtzZ4KWM91
+
+tunnels:
+  widgets:
+    proto: http
+    addr: 4444
+  mcp:
+    proto: http
+    addr: 3000

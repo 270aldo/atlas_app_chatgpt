@@ -1,21 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Dashboard } from '../components/Dashboard';
+import { useWidgetProps } from '../utils/useWidgetProps';
 import '../styles/globals.css';
 
-// Default props - will be overridden by window.openai.toolOutput if available
-const defaultProps = {
-  weekData: {
-    week: 1,
-    sessionsCompleted: 0,
-    totalSessions: 3,
-    streakDays: 0,
-    nextSession: 'Hoy',
-  },
+const App = () => {
+  const props = useWidgetProps({
+    weekData: {
+      week: 4,
+      sessionsCompleted: 3,
+      totalSessions: 5,
+      streakDays: 12,
+      nextSession: 'Mañana 7:00 AM',
+    },
+  });
+  return <Dashboard weekData={props.weekData} />;
 };
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Dashboard {...defaultProps} />
+    <App />
   </React.StrictMode>
 );

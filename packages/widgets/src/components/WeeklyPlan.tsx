@@ -14,6 +14,7 @@ type PlanItem = {
 interface WeeklyPlanProps {
   plan?: PlanItem[];
   safety?: { risk?: 'low' | 'moderate' | 'high'; recommendations?: string[]; disclaimer?: string };
+  [key: string]: unknown;
 }
 
 const defaults: WeeklyPlanProps = {

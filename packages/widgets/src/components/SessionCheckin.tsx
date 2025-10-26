@@ -16,6 +16,7 @@ interface SessionCheckinProps {
     recommendations?: string[];
     disclaimer?: string;
   };
+  [key: string]: unknown;
 }
 
 const defaultProps: SessionCheckinProps = {
