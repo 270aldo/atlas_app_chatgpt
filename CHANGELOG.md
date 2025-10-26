@@ -8,14 +8,30 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 ## [Unreleased]
 
 ### Added
+- Middleware de seguridad clínica (safety-policy) con guardrails y evaluación de riesgo
+- Utilidades de plan adaptativo (adaptive-plan) con tests
+- Recurso MCP: weekly-plan
+- Widgets: ConsentBanner, SafetyNotice, ReadAloudButton, DailyNudge, WeeklyPlan
+- Documentación: WARP.md, QUICKSTART.md
+- Script de desarrollo: start-atlas.sh
+- Config centralizada de WIDGET_BASE_URL en mcp-node
 
-- Estructura inicial del proyecto
-- Documentación completa del OpenAI Apps SDK en `/Refs`
-- Configuración de Git y Gitflow
-- Templates de GitHub (PR, issues)
+### Changed
+- Dashboard y WeeklyBoard actualizados con nuevos componentes
+- Recursos MCP ahora usan configuración centralizada para URLs de widgets
+- Actualizados README, CONTRIBUTING, GITFLOW, TESTING y templates de issues
+
+### Tests
+- Tests para middleware de seguridad
+- Tests para utilidades de adaptive-plan
+- Tests para hook useWidgetProps en widgets
+
+### Chore
+- Actualizado pnpm-lock.yaml
+- Mejora de scripts/update-widget-urls.sh
+- Nuevos utilitarios: server-http.ts y resolve-widget-assets.ts
 
 ---
-
 ## [0.1.0] - 2025-10-14
 
 ### Added
