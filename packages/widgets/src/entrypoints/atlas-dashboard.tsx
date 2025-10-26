@@ -6,7 +6,13 @@ import '../styles/globals.css';
 
 const App = () => {
   const props = useWidgetProps({
-    weekData: { week: 4, sessionsCompleted: 3, totalSessions: 5, streakDays: 12, nextSession: 'Mañana 7:00 AM' },
+    weekData: {
+      week: 4,
+      sessionsCompleted: 3,
+      totalSessions: 5,
+      streakDays: 12,
+      nextSession: 'Mañana 7:00 AM',
+    },
   });
   return <Dashboard weekData={props.weekData} />;
 };

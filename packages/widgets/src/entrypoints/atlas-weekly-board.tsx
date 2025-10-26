@@ -47,7 +47,10 @@ const samplePlan: DaySession[] = [
 ];
 
 const App = () => {
-  const props = useWidgetProps<{ weekNumber: number; plan: DaySession[] }>({ weekNumber: 4, plan: samplePlan });
+  const props = useWidgetProps<{ weekNumber: number; plan: DaySession[] }>({
+    weekNumber: 4,
+    plan: samplePlan,
+  });
   return <WeeklyBoard weekNumber={props.weekNumber} plan={props.plan} />;
 };
 

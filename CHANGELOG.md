@@ -8,6 +8,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 ## [Unreleased]
 
 ### Added
+
 - Middleware de seguridad clínica (safety-policy) con guardrails y evaluación de riesgo
 - Utilidades de plan adaptativo (adaptive-plan) con tests
 - Recurso MCP: weekly-plan
@@ -17,21 +18,25 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 - Config centralizada de WIDGET_BASE_URL en mcp-node
 
 ### Changed
+
 - Dashboard y WeeklyBoard actualizados con nuevos componentes
 - Recursos MCP ahora usan configuración centralizada para URLs de widgets
 - Actualizados README, CONTRIBUTING, GITFLOW, TESTING y templates de issues
 
 ### Tests
+
 - Tests para middleware de seguridad
 - Tests para utilidades de adaptive-plan
 - Tests para hook useWidgetProps en widgets
 
 ### Chore
+
 - Actualizado pnpm-lock.yaml
 - Mejora de scripts/update-widget-urls.sh
 - Nuevos utilitarios: server-http.ts y resolve-widget-assets.ts
 
 ---
+
 ## [0.1.0] - 2025-10-14
 
 ### Added

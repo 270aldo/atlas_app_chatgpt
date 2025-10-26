@@ -22,6 +22,7 @@ ngrok version
 ### Si falta algo:
 
 **Node.js 20+:**
+
 ```bash
 # macOS (usando nvm recomendado)
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
@@ -30,12 +31,14 @@ nvm use 20
 ```
 
 **pnpm:**
+
 ```bash
 corepack enable
 corepack prepare pnpm@latest --activate
 ```
 
 **ngrok:**
+
 ```bash
 # macOS con Homebrew
 brew install ngrok/ngrok/ngrok
@@ -46,6 +49,7 @@ ngrok config add-authtoken TU_TOKEN_AQUI
 ```
 
 **ChatGPT Plus/Pro con Developer Mode:**
+
 - Ve a https://chatgpt.com/
 - Inicia sesión
 - Settings → Features → Developer Mode (debe estar habilitado)
@@ -62,6 +66,7 @@ pnpm install
 ```
 
 **Salida esperada:**
+
 ```
 Scope: 2 of 3 workspace projects
 ...
@@ -102,6 +107,7 @@ pnpm --filter @atlas/widgets dev
 ```
 
 **Salida esperada:**
+
 ```
 VITE v5.1.0  ready in XXX ms
 
@@ -123,6 +129,7 @@ ngrok http 4444
 ```
 
 **Salida esperada:**
+
 ```
 ngrok
 
@@ -154,6 +161,7 @@ WIDGET_BASE_URL=https://abc123def456.ngrok.app pnpm --filter @atlas/mcp-node dev
 ```
 
 **Salida esperada:**
+
 ```
 ATLAS MCP Server running on stdio
 ```
@@ -175,6 +183,7 @@ pnpm --filter @atlas/mcp-node build
 ```
 
 **Salida esperada:**
+
 ```
 @atlas/mcp-node build$ tsc
 Done in XXms
@@ -203,21 +212,25 @@ Esto genera `packages/mcp-node/dist/index.js`.
 Llena los campos así:
 
 **Name:**
+
 ```
 ATLAS Fitness
 ```
 
 **Command:**
+
 ```
 node
 ```
 
 **Arguments (lista, un item por línea):**
+
 ```
 /Users/aldoolivas/atlas_app_chatgpt/packages/mcp-node/dist/index.js
 ```
 
 **Environment Variables (formato JSON):**
+
 ```json
 {
   "WIDGET_BASE_URL": "https://abc123def456.ngrok.app"
@@ -227,6 +240,7 @@ node
 🔴 **IMPORTANTE:** Reemplaza `abc123def456.ngrok.app` con TU URL de ngrok del paso 3.
 
 **Working Directory (opcional):**
+
 ```
 /Users/aldoolivas/atlas_app_chatgpt
 ```
@@ -249,12 +263,14 @@ Ahora puedes probar ATLAS en el chat.
 ### Test 1: Listar Tools Disponibles
 
 **Prompt:**
+
 ```
 Lista los tools disponibles de ATLAS
 ```
 
 **Respuesta esperada:**
 ChatGPT debe listar:
+
 - `atlas_dashboard` - Dashboard semanal de progreso
 - `atlas_weekly_board` - Plan semanal
 - `atlas_session_checkin` - Check-in de sesión
@@ -266,11 +282,13 @@ ChatGPT debe listar:
 ### Test 2: Dashboard (Sin Check-in)
 
 **Prompt:**
+
 ```
 Muestra mi dashboard de ATLAS
 ```
 
 **Resultado esperado:**
+
 - Widget renderizado inline con:
   - Título "ATLAS Dashboard"
   - Semana actual
@@ -284,11 +302,13 @@ Muestra mi dashboard de ATLAS
 ### Test 3: Check-in con Riesgo Bajo
 
 **Prompt:**
+
 ```
 Hacer check-in: dolor 2, energía 8, RPE 4
 ```
 
 **Resultado esperado:**
+
 - Widget de check-in con:
   - ✅ Aviso **VERDE** "Riesgo bajo"
   - Recomendaciones positivas
@@ -299,11 +319,13 @@ Hacer check-in: dolor 2, energía 8, RPE 4
 ### Test 4: Check-in con Riesgo Moderado
 
 **Prompt:**
+
 ```
 Hacer check-in: dolor 5, energía 4, RPE 7
 ```
 
 **Resultado esperado:**
+
 - Widget de check-in con:
   - ⚠️ Aviso **AMARILLO** "Riesgo moderado"
   - Recomendaciones de precaución
@@ -314,11 +336,13 @@ Hacer check-in: dolor 5, energía 4, RPE 7
 ### Test 5: Check-in con Riesgo Alto (Red Flags)
 
 **Prompt:**
+
 ```
 Hacer check-in: dolor 9, energía 1, RPE 10, notas: "dolor de pecho y mareo"
 ```
 
 **Resultado esperado:**
+
 - Widget de check-in con:
   - 🛑 Aviso **ROJO** "Riesgo alto"
   - Instrucciones de **DETENER EJERCICIO**
@@ -332,11 +356,13 @@ Hacer check-in: dolor 9, energía 1, RPE 10, notas: "dolor de pecho y mareo"
 Después del check-in de riesgo alto anterior, intenta:
 
 **Prompt:**
+
 ```
 Dame un plan de fuerza intenso
 ```
 
 **Resultado esperado:**
+
 - ChatGPT debe **bloquear** la generación del plan
 - Mensaje de seguridad:
   - "Por tu seguridad, solo check-ins están disponibles ahora"
@@ -350,6 +376,7 @@ Dame un plan de fuerza intenso
 Primero haz un check-in seguro:
 
 **Prompt:**
+
 ```
 Check-in: dolor 2, energía 8, RPE 4
 ```
@@ -357,11 +384,13 @@ Check-in: dolor 2, energía 8, RPE 4
 Luego solicita el plan:
 
 **Prompt:**
+
 ```
 Dame un plan adaptativo semanal con objetivo de equilibrio
 ```
 
 **Resultado esperado:**
+
 - Widget con plan de 7 días
 - Cada día con:
   - Título del entrenamiento
@@ -375,11 +404,13 @@ Dame un plan adaptativo semanal con objetivo de equilibrio
 ### Test 8: Safety Review
 
 **Prompt:**
+
 ```
 Revisar seguridad: dolor 7, energía 3, RPE 8, actividad propuesta "Sentadillas con peso"
 ```
 
 **Resultado esperado:**
+
 - ChatGPT analiza el riesgo
 - Gate: **"defer"** (posponer/reducir)
 - Recomendaciones:
@@ -392,11 +423,13 @@ Revisar seguridad: dolor 7, energía 3, RPE 8, actividad propuesta "Sentadillas 
 ### Test 9: Weekly Board
 
 **Prompt:**
+
 ```
 Muestra mi plan semanal
 ```
 
 **Resultado esperado:**
+
 - Widget con calendario/plan semanal
 - Vista de sesiones programadas
 - Indicadores visuales
@@ -420,16 +453,21 @@ Muestra mi plan semanal
 **Causa:** ChatGPT no puede ejecutar el servidor.
 
 **Solución:**
+
 1. Verifica ruta completa al archivo:
+
    ```bash
    ls -la /Users/aldoolivas/atlas_app_chatgpt/packages/mcp-node/dist/index.js
    ```
+
    Debe existir. Si no, ejecuta `pnpm --filter @atlas/mcp-node build`.
 
 2. Prueba ejecutar manualmente:
+
    ```bash
    WIDGET_BASE_URL=https://tu-url.ngrok.app node /Users/aldoolivas/atlas_app_chatgpt/packages/mcp-node/dist/index.js
    ```
+
    Debe imprimir "ATLAS MCP Server running on stdio".
 
 3. En ChatGPT Settings → Connectors → Click en "Refresh" o "Reconnect".
@@ -441,6 +479,7 @@ Muestra mi plan semanal
 **Causa:** URL de ngrok incorrecta o expirada.
 
 **Solución:**
+
 1. Verifica que ngrok siga corriendo (Terminal 2).
 2. Copia la URL actual de ngrok.
 3. Actualiza WIDGET_BASE_URL en ChatGPT Settings → Connectors → Edit → Environment Variables.
@@ -458,6 +497,7 @@ Muestra mi plan semanal
 **Causa:** Plan gratuito de ngrok genera URLs aleatorias.
 
 **Opciones:**
+
 1. **Opción gratuita:** Actualiza WIDGET_BASE_URL cada vez (pasos anteriores).
 2. **Opción de pago ($8/mes):** Ngrok Pro te da URL fija tipo `https://atlas-aldo.ngrok.app`.
 
@@ -468,10 +508,11 @@ Muestra mi plan semanal
 **Causa:** `structuredContent` no se está pasando correctamente.
 
 **Solución:**
+
 1. Abre Chrome DevTools en ChatGPT (F12 o Cmd+Option+I).
 2. En Console, escribe:
    ```javascript
-   window.openai.widget.getProps()
+   window.openai.widget.getProps();
    ```
 3. Debe retornar un objeto con datos. Si retorna `undefined` o está vacío, el problema está en el servidor MCP.
 4. Verifica que los handlers de tools incluyan `structuredContent` en la respuesta.
@@ -483,6 +524,7 @@ Muestra mi plan semanal
 **Causa:** Intentas usar `atlas_adaptive_plan` sin hacer check-in primero.
 
 **Solución esperada:**
+
 - Esto es correcto. El sistema pide check-in por seguridad.
 - Haz un check-in primero y luego vuelve a intentar.
 
@@ -493,6 +535,7 @@ Muestra mi plan semanal
 **Causa:** CORS o URL de recursos incorrecta.
 
 **Solución:**
+
 1. Verifica CORS en Vite (ya está habilitado en `vite.config.ts`).
 2. Prueba cargar directamente el widget en tu navegador:
    ```
@@ -508,17 +551,20 @@ Muestra mi plan semanal
 **Cada vez que inicies desarrollo:**
 
 1. **Terminal 1:**
+
    ```bash
    pnpm --filter @atlas/widgets dev
    ```
 
 2. **Terminal 2:**
+
    ```bash
    ngrok http 4444
    # Copia la nueva URL
    ```
 
 3. **Terminal 3:**
+
    ```bash
    WIDGET_BASE_URL=https://NUEVA_URL.ngrok.app pnpm --filter @atlas/mcp-node dev
    ```

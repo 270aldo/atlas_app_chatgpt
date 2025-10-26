@@ -62,22 +62,26 @@ pnpm format
 To test MCP tools/widgets locally with ChatGPT (requires **3 terminals**):
 
 **Terminal 1 - Widget Dev Server:**
+
 ```bash
 cd packages/widgets
 pnpm dev  # Runs on localhost:4444
 ```
 
 **Terminal 2 - ngrok Tunnel:**
+
 ```bash
 ngrok http 4444  # Creates HTTPS tunnel, note the URL (e.g., https://abc123.ngrok.app)
 ```
 
 **Terminal 3 - MCP Server:**
+
 ```bash
 WIDGET_BASE_URL=https://abc123.ngrok.app pnpm --filter @atlas/mcp-node dev
 ```
 
 **ChatGPT Setup:**
+
 1. Enable **Developer Mode** (Settings → Connectors)
 2. Register connector pointing to `packages/mcp-node`
 3. Refresh connector in ChatGPT
@@ -168,6 +172,7 @@ Analyzes user check-in data and classifies risk into three tiers:
 - **High Risk**: Pain ≥7, Energy ≤2, RPE ≥9, or red flags detected
 
 **Red Flags (auto-triggers high risk):**
+
 - "dolor de pecho" / "chest pain"
 - "mareo" / "dizzy"
 - "desmayo" / "fainted"
@@ -175,6 +180,7 @@ Analyzes user check-in data and classifies risk into three tiers:
 - "inflamación severa" / "severe swelling"
 
 **Output:**
+
 ```typescript
 {
   risk: 'low' | 'moderate' | 'high',
@@ -200,6 +206,7 @@ Intercepts ALL MCP tool calls and applies safety logic:
    - Allows execution normally
 
 **Blocked Tool Response:**
+
 ```typescript
 {
   type: 'text',
@@ -222,6 +229,7 @@ Intercepts ALL MCP tool calls and applies safety logic:
 Manual safety review tool for trainers/system to explicitly check a user's safety status.
 
 **Input:**
+
 ```typescript
 {
   userId: string,
@@ -239,6 +247,7 @@ Manual safety review tool for trainers/system to explicitly check a user's safet
 Generates personalized workout plans based on user's safety profile.
 
 **Input:**
+
 ```typescript
 {
   userId: string,
@@ -253,16 +262,19 @@ Generates personalized workout plans based on user's safety profile.
 ### 5. UI Safety Components
 
 **SafetyNotice** (`components/SafetyNotice.tsx`):
+
 - Displays risk level with color-coded badge (green/yellow/red)
 - Shows recommendations and medical disclaimer
 - Used in Dashboard and SessionCheckin widgets
 
 **ConsentBanner** (`components/ConsentBanner.tsx`):
+
 - Medical disclaimer and consent acknowledgment
 - Dismissible, persists in localStorage
 - Required on SessionCheckin widget
 
 **DailyNudge** (`components/DailyNudge.tsx`):
+
 - Tracks last check-in timestamp in localStorage
 - Shows reminder if >24h since last check-in
 - Dismissible but reappears after 24h
@@ -286,6 +298,7 @@ ChatGPT → "⚠️ Por tu seguridad, consulta a un médico inmediatamente..."
 ### Configuration
 
 **WIDGET_BASE_URL** (`config.ts`):
+
 ```typescript
 export const WIDGET_BASE_URL = process.env.WIDGET_BASE_URL?.trim() || 'http://localhost:4444';
 ```
@@ -340,6 +353,7 @@ ATLAS provides **4 MCP tools** that ChatGPT can invoke:
 **Description:** Shows user's weekly progress dashboard with sessions completed, streak, and upcoming sessions.
 
 **Input:**
+
 ```typescript
 {
   userId: string,
@@ -350,11 +364,13 @@ ATLAS provides **4 MCP tools** that ChatGPT can invoke:
 **Output:** Skybridge resource URI pointing to Dashboard widget.
 
 **Usage in ChatGPT:**
+
 - "Show my ATLAS dashboard"
 - "How am I doing this week?"
 - "Display my progress"
 
 **Implementation:**
+
 - Tool: `packages/mcp-node/src/tools/atlas-dashboard.ts`
 - Resource: `packages/mcp-node/src/resources/atlas-dashboard-resource.ts`
 - Widget: `packages/widgets/src/entrypoints/atlas-dashboard.tsx`
@@ -366,6 +382,7 @@ ATLAS provides **4 MCP tools** that ChatGPT can invoke:
 **Description:** Interactive form for users to report pain, energy, RPE, and notes after a workout session. **Protected by safety middleware.**
 
 **Input:**
+
 ```typescript
 {
   userId: string,
@@ -380,21 +397,25 @@ ATLAS provides **4 MCP tools** that ChatGPT can invoke:
 ```
 
 **Output:**
+
 - If **high risk + red flags**: Blocked tool response with safety recommendations
 - Otherwise: Skybridge resource URI pointing to SessionCheckin widget
 
 **Safety Features:**
+
 - Middleware intercepts tool call
 - Runs `triageCheckin()` on check-in data
 - Blocks dangerous check-ins (chest pain, severe symptoms)
 - Shows SafetyNotice and ConsentBanner in widget
 
 **Usage in ChatGPT:**
+
 - "I want to check in after my workout"
 - "Let me report my session"
 - "Check in: pain 5, energy 7, felt good"
 
 **Implementation:**
+
 - Tool: `packages/mcp-node/src/tools/atlas-session-checkin.ts`
 - Resource: `packages/mcp-node/src/resources/atlas-session-checkin-resource.ts`
 - Widget: `packages/widgets/src/entrypoints/atlas-session-checkin.tsx`
@@ -407,6 +428,7 @@ ATLAS provides **4 MCP tools** that ChatGPT can invoke:
 **Description:** Generates personalized workout plan based on user's safety profile, recent check-ins, and goals.
 
 **Input:**
+
 ```typescript
 {
   userId: string,
@@ -424,6 +446,7 @@ ATLAS provides **4 MCP tools** that ChatGPT can invoke:
 **Output:** JSON workout plan with exercises, sets, reps, tempo, rest, and safety modifications.
 
 **Example Output:**
+
 ```json
 {
   "week": 1,
@@ -447,10 +470,12 @@ ATLAS provides **4 MCP tools** that ChatGPT can invoke:
 ```
 
 **Usage in ChatGPT:**
+
 - "Generate my workout plan for this week"
 - "Create an adaptive plan based on my recent check-ins"
 
 **Implementation:**
+
 - Tool: `packages/mcp-node/src/tools/atlas-adaptive-plan.ts`
 
 ---
@@ -460,6 +485,7 @@ ATLAS provides **4 MCP tools** that ChatGPT can invoke:
 **Description:** Manual safety review tool for trainers/system to check a user's current risk status.
 
 **Input:**
+
 ```typescript
 {
   userId: string,
@@ -476,6 +502,7 @@ ATLAS provides **4 MCP tools** that ChatGPT can invoke:
 **Output:** Risk classification (low/moderate/high) with recommendations and trigger events.
 
 **Example Output:**
+
 ```json
 {
   "risk": "high",
@@ -489,10 +516,12 @@ ATLAS provides **4 MCP tools** that ChatGPT can invoke:
 ```
 
 **Usage in ChatGPT:**
+
 - "Review safety status for user123"
 - "Is this user safe to continue training?"
 
 **Implementation:**
+
 - Tool: `packages/mcp-node/src/tools/atlas-safety-review.ts`
 - Uses: `packages/mcp-node/src/utils/clinical-guardrails.ts`
 
@@ -541,13 +570,16 @@ ATLAS tracks:
 ### Widget Tests (`packages/widgets`)
 
 **Test Files:**
+
 - `src/utils/useWidgetProps.test.tsx` (2 tests)
 
 **Key Tests:**
+
 - ✅ Returns defaults when no window.openai available
 - ✅ Merges defaults with window.openai.widget.getProps()
 
 **Running Tests:**
+
 ```bash
 cd packages/widgets
 pnpm test
@@ -556,10 +588,12 @@ pnpm test
 ### MCP Tests (`packages/mcp-node`)
 
 **Test Files:**
+
 - `src/utils/clinical-guardrails.test.ts` (4 tests)
 - `src/middleware/safety-policy.test.ts` (5 tests)
 
 **Key Tests:**
+
 - ✅ Clinical guardrails: low/moderate/high risk classification
 - ✅ Red flags detection (chest pain, dizziness, falls)
 - ✅ Safety middleware: blocks high-risk check-ins
@@ -567,6 +601,7 @@ pnpm test
 - ✅ Safety middleware: injects warnings for high risk without triggers
 
 **Running Tests:**
+
 ```bash
 cd packages/mcp-node
 pnpm test
@@ -597,6 +632,7 @@ pnpm test
 ### Adding a New MCP Tool
 
 1. **Create Tool Definition** (`packages/mcp-node/src/tools/my-tool.ts`):
+
 ```typescript
 export const definition = {
   name: 'atlas_my_tool',
@@ -604,45 +640,51 @@ export const definition = {
   inputSchema: {
     type: 'object',
     properties: {
-      userId: { type: 'string', description: 'User ID' }
+      userId: { type: 'string', description: 'User ID' },
     },
-    required: ['userId']
-  }
+    required: ['userId'],
+  },
 };
 
 export async function handler(args: { userId: string }) {
   // If returning widget, reference a resource
   return {
-    content: [{
-      type: 'resource',
-      resource: { uri: 'skybridge://atlas_my_tool_resource', mimeType: 'text/html+skybridge' }
-    }]
+    content: [
+      {
+        type: 'resource',
+        resource: { uri: 'skybridge://atlas_my_tool_resource', mimeType: 'text/html+skybridge' },
+      },
+    ],
   };
 }
 ```
 
 2. **Create Resource** (`packages/mcp-node/src/resources/atlas-my-tool-resource.ts`):
+
 ```typescript
 import { WIDGET_BASE_URL } from '../config';
 
 export const definition = {
   uri: 'skybridge://atlas_my_tool_resource',
   name: 'ATLAS My Tool Widget',
-  mimeType: 'text/html+skybridge'
+  mimeType: 'text/html+skybridge',
 };
 
 export async function handler() {
   return {
-    contents: [{
-      uri: 'skybridge://atlas_my_tool_resource',
-      mimeType: 'text/html+skybridge',
-      text: `${WIDGET_BASE_URL}/atlas-my-tool.html`
-    }]
+    contents: [
+      {
+        uri: 'skybridge://atlas_my_tool_resource',
+        mimeType: 'text/html+skybridge',
+        text: `${WIDGET_BASE_URL}/atlas-my-tool.html`,
+      },
+    ],
   };
 }
 ```
 
 3. **Register in MCP Server** (`packages/mcp-node/src/index.ts`):
+
 ```typescript
 import * as myTool from './tools/my-tool';
 import * as myToolResource from './resources/atlas-my-tool-resource';
@@ -663,13 +705,16 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
 ```
 
 4. **Create Widget** (`packages/widgets/src/entrypoints/atlas-my-tool.tsx`):
+
 ```tsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { MyToolComponent } from '../components/MyToolComponent';
 import '../styles/globals.css';
 
-const defaultProps = { /* ... */ };
+const defaultProps = {
+  /* ... */
+};
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -679,6 +724,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 ```
 
 5. **Add to Vite Config** (`packages/widgets/vite.config.ts`):
+
 ```typescript
 input: {
   'atlas-dashboard': resolve(__dirname, 'src/entrypoints/atlas-dashboard.tsx'),
@@ -692,6 +738,7 @@ input: {
    - Add component tests in `packages/widgets/src/components/MyToolComponent.test.tsx`
 
 7. **Verify**:
+
 ```bash
 pnpm typecheck  # ✅ No TypeScript errors
 pnpm test       # ✅ All tests passing
@@ -713,20 +760,25 @@ interface MyWidgetProps {
 
 const defaultProps: MyWidgetProps = {
   userId: 'demo',
-  data: [1, 2, 3]
+  data: [1, 2, 3],
 };
 
 export const MyWidget: React.FC<MyWidgetProps> = (props) => {
   // Merges props with window.openai.widget.getProps()
   const { userId, data } = useWidgetProps<MyWidgetProps>(props);
 
-  return <div>User: {userId}, Data: {data.join(',')}</div>;
+  return (
+    <div>
+      User: {userId}, Data: {data.join(',')}
+    </div>
+  );
 };
 ```
 
 ### Environment Variables
 
 **WIDGET_BASE_URL** is the ONLY environment variable:
+
 - Local: `http://localhost:4444` (default)
 - Development: Set via `WIDGET_BASE_URL=https://abc123.ngrok.app`
 - Production: Set via Vercel environment variables
@@ -746,25 +798,29 @@ export const MyWidget: React.FC<MyWidgetProps> = (props) => {
 ### Issue: TypeScript error "does not satisfy constraint"
 
 **Error:**
+
 ```
 Type 'MyProps' does not satisfy the constraint 'Record<string, unknown>'.
 Index signature for type 'string' is missing.
 ```
 
 **Solution:** Use `Record<string, any>` with eslint-disable:
+
 ```typescript
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useWidgetProps<T extends Record<string, any>>(defaults: T): T
+export function useWidgetProps<T extends Record<string, any>>(defaults: T): T;
 ```
 
 ### Issue: Tests failing with "Found multiple elements"
 
 **Error:**
+
 ```
 TestingLibraryElementError: Found multiple elements by: [data-testid="value"]
 ```
 
 **Solution:** Add `cleanup()` in `afterEach`:
+
 ```typescript
 import { cleanup } from '@testing-library/react';
 
@@ -776,6 +832,7 @@ afterEach(() => {
 ### Issue: Widget not loading in ChatGPT
 
 **Checklist:**
+
 1. ✅ Widget dev server running on localhost:4444?
 2. ✅ ngrok tunnel active and HTTPS URL obtained?
 3. ✅ MCP server started with `WIDGET_BASE_URL=https://abc123.ngrok.app`?
@@ -785,6 +842,7 @@ afterEach(() => {
 ### Issue: Safety middleware not blocking dangerous check-ins
 
 **Checklist:**
+
 1. ✅ `applySafetyPolicy()` imported and wrapping tool handler?
 2. ✅ Check-in data includes `notes` field with red flag keywords?
 3. ✅ Tool name exactly matches `atlas_session_checkin`?
@@ -793,6 +851,7 @@ afterEach(() => {
 ### Issue: ngrok tunnel expired
 
 **Solution:** Restart ngrok and update WIDGET_BASE_URL:
+
 ```bash
 # Terminal 2
 ngrok http 4444  # Note new URL: https://xyz789.ngrok.app
@@ -841,6 +900,7 @@ WIDGET_BASE_URL=https://abc123.ngrok.app pnpm --filter @atlas/mcp-node dev
 ### Key File Locations
 
 **MCP Server:**
+
 - Tools: `packages/mcp-node/src/tools/*.ts`
 - Resources: `packages/mcp-node/src/resources/*.ts`
 - Safety: `packages/mcp-node/src/middleware/safety-policy.ts`
@@ -849,56 +909,64 @@ WIDGET_BASE_URL=https://abc123.ngrok.app pnpm --filter @atlas/mcp-node dev
 - Main: `packages/mcp-node/src/index.ts`
 
 **Widgets:**
+
 - Entrypoints: `packages/widgets/src/entrypoints/*.tsx`
 - Components: `packages/widgets/src/components/*.tsx`
 - Hook: `packages/widgets/src/utils/useWidgetProps.ts`
 - Build: `packages/widgets/vite.config.ts`
 
 **Tests:**
+
 - Widget tests: `packages/widgets/src/utils/*.test.tsx`
 - MCP tests: `packages/mcp-node/src/**/*.test.ts`
 
 ### MCP Tools Quick Ref
 
-| Tool Name | Description | Safety Protected |
-|-----------|-------------|------------------|
-| `atlas_dashboard` | Weekly progress dashboard | No |
-| `atlas_session_checkin` | Check-in form (pain/energy/RPE) | ✅ Yes |
-| `atlas_adaptive_plan` | Generate workout plan | No |
-| `atlas_safety_review` | Manual safety review | No |
+| Tool Name               | Description                     | Safety Protected |
+| ----------------------- | ------------------------------- | ---------------- |
+| `atlas_dashboard`       | Weekly progress dashboard       | No               |
+| `atlas_session_checkin` | Check-in form (pain/energy/RPE) | ✅ Yes           |
+| `atlas_adaptive_plan`   | Generate workout plan           | No               |
+| `atlas_safety_review`   | Manual safety review            | No               |
 
 ### Safety Risk Thresholds
 
-| Risk Level | Pain | Energy | RPE | Action |
-|------------|------|--------|-----|--------|
-| **Low** | ≤3 | ≥5 | ≤6 | Allow |
-| **Moderate** | 4-6 | 3-4 | 7-8 | Allow with warnings |
-| **High** | ≥7 | ≤2 | ≥9 | Block if red flags |
+| Risk Level   | Pain | Energy | RPE | Action              |
+| ------------ | ---- | ------ | --- | ------------------- |
+| **Low**      | ≤3   | ≥5     | ≤6  | Allow               |
+| **Moderate** | 4-6  | 3-4    | 7-8 | Allow with warnings |
+| **High**     | ≥7   | ≤2     | ≥9  | Block if red flags  |
 
 **Red Flags:** chest pain, dizzy, fainted, fell, severe swelling
 
 ### Testing Prompts for ChatGPT
 
 **Dashboard:**
+
 - "Show my ATLAS dashboard"
 - "How am I doing this week?"
 
 **Safe Check-in:**
+
 - "Check in: pain 2, energy 8, RPE 4, felt great"
 
 **Blocked Check-in:**
+
 - "Check in: pain 8, notes: 'dolor de pecho'"
 - "Check in: pain 9, energy 1, notes: 'mareo y caída'"
 
 **Adaptive Plan:**
+
 - "Generate my workout plan for this week"
 
 **Safety Review:**
+
 - "Review safety status for user123"
 
 ### Current Project Status
 
 ✅ **All systems operational:**
+
 - Dependencies: Installed and up to date
 - TypeScript: Compiles without errors
 - Tests: 11/11 passing (9 MCP + 2 widgets)

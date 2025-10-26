@@ -22,7 +22,12 @@ export function resolveWidgetAssets(entryName: string): WidgetAssets | null {
 
     return {
       js: js || undefined,
-      css: cssCandidates.length === 0 ? undefined : cssCandidates.length === 1 ? cssCandidates[0] : cssCandidates,
+      css:
+        cssCandidates.length === 0
+          ? undefined
+          : cssCandidates.length === 1
+            ? cssCandidates[0]
+            : cssCandidates,
     };
   } catch {
     return null;

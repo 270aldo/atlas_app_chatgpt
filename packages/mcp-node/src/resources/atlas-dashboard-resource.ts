@@ -18,11 +18,15 @@ export const atlasDashboardResource = {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ATLAS Dashboard</title>
-  ${Array.isArray(assets.css)
-    ? assets.css.map((c) => `<link rel="stylesheet" href="${BASE_URL}/assets/${c}" />`).join('\n  ')
-    : assets.css
-    ? `<link rel="stylesheet" href="${BASE_URL}/assets/${assets.css}" />`
-    : ''}
+  ${
+    Array.isArray(assets.css)
+      ? assets.css
+          .map((c) => `<link rel="stylesheet" href="${BASE_URL}/assets/${c}" />`)
+          .join('\n  ')
+      : assets.css
+        ? `<link rel="stylesheet" href="${BASE_URL}/assets/${assets.css}" />`
+        : ''
+  }
 </head>
 <body>
   <div id="root"></div>
