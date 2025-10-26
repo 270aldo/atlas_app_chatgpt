@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Dashboard } from '../components/Dashboard';
 import '../styles/globals.css';
-import { useWidgetProps } from '../utils/useWidgetProps';
 
 const App = () => {
   const props = useWidgetProps({
