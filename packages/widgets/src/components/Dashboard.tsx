@@ -18,6 +18,7 @@ interface DashboardProps {
     recommendations?: string[];
     disclaimer?: string;
   };
+  [key: string]: unknown;
 }
 
 const defaultWeekData: WeekData = {
